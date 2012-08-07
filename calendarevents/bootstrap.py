@@ -3,6 +3,7 @@
 
 from calendarevents import model
 from tgext.pluggable import app_model
+from datetime import datetime
 
 def bootstrap(command, conf, vars):
     print 'Bootstrapping calendarevents...'
@@ -20,4 +21,10 @@ def bootstrap(command, conf, vars):
         c = model.Calendar(name='default')
         model.DBSession.add(c)
 
+    e = model.DBSession.query(model.CalendarEvent).first()
+    if not e:
+        e = model.CalendarEvent(calendar_id=c.uid,name='default_event', summary='default_description', date=datetime.now(), location='torino,it')
+        model.DBSession.add(e)
+
     model.DBSession.flush()
+

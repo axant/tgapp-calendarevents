@@ -22,4 +22,5 @@ class RootController(TGController):
     @validate(dict(cal=SQLAEntityConverter(model.Calendar)),
               error_handler=fail_with(404))
     def calendar(self, cal):
-        return dict(cal=cal)
+        return dict(cal=cal.view_events())
+    
