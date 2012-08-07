@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<htmlxmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/">
+	<head>
+		<title>Shows a calendar</title>
+	</head>
+	<body>
+  <span py:for="event in cal" class="error">
+  ${event.name}
+  <br />
+  ${event.datetime}
+  <br />
+  ${event.weather}
+  <br />
+  ${event.summary}
+  </span>	
+	</body>
+</html>

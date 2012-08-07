@@ -19,7 +19,7 @@ class Calendar(DeclarativeBase):
         events = DBSession.query(CalendarEvent).filter_by(calendar_id=self.uid).all()
         events_list = []
         for event in events:
-            events_list.append(event.event_details())
+            events_list.append(event)
         return events_list
 
 
