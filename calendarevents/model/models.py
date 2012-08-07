@@ -7,7 +7,17 @@ from calendarevents.model import DBSession
 from tgext.pluggable import app_model, primary_key
 from datetime import datetime
 from datetime import timedelta
-import pywapi
+import pywapi, re
+
+location_regular_expression = re.compile(r"([a-z]+,[a-z]{2})")
+
+class Event:
+	def __init__(self):
+		self.name = ''
+		self.summary = ''
+		self.datetime = datetime(2000,01,01)
+		self.location = ''
+		self.weather = ''
 
 class Calendar(DeclarativeBase):
     __tablename__ = 'calendarevents_calendar'
@@ -22,15 +32,13 @@ class Calendar(DeclarativeBase):
             events_list.append(event.event_details())
         return events_list
 
-
-class Event:
-	def __init__(self):
-		self.name = ''
-		self.summary = ''
-		self.datetime = datetime(2000,01,01)
-		self.location = ''
-		self.weather = ''
-
+    def add_event(self, name, datetime, summary, location):
+        if location_regular_expression.match(location):
+            if datetime > datetime.now():
+                new_event = CalendarEvent(calendar_id=self.uid,name=name, summary=summary, datetime=datetime, location=location)
+                DBSession.add(new_event)
+        
+        
 class CalendarEvent(DeclarativeBase):
     __tablename__ = 'calendarevents_event'
 
@@ -50,13 +58,13 @@ class CalendarEvent(DeclarativeBase):
         this_event.datetime = self.datetime
         this_event.location = self.location
         this_event.weather = "Weather conditions not available"
-        today_to_event = self.datetime -datetime.now()
+        today_to_event = self.datetime - datetime.now()
         today_to_event = timedelta(seconds=today_to_event.seconds)
         if datetime.now() < self.datetime:
             weather = pywapi.get_weather_from_google(self.location, hl='it')
             if today_to_event.days < 1:
-                this_event.weather = weather['current_condition']['conditions']
+                this_event.weather = weather['current_conditions']['condition']
             elif today_to_event.days < 5:
-                this_event.weather = weather['forecasts'][today_to_event.days]['conditions']
+                this_event.weather = weather['forecasts'][today_to_event.days]['condition']
         return this_event
 

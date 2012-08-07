@@ -5,14 +5,14 @@
 		<title>Shows a calendar</title>
 	</head>
 	<body>
-  <span py:for="event in cal" class="error">
-  ${event.name}
+  <p py:for="event in cal" class="error">
+  Titolo evento: ${event.name}
   <br />
-  ${event.datetime}
+  Data evento: ${event.datetime}
   <br />
-  ${event.weather}
+  Che tempo farà: ${event.weather}
   <br />
-  ${event.summary}
-  </span>	
+  Breve descrizione dell'evento: ${event.summary}
+  </p>	
 	</body>
 </html>
