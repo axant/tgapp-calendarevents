@@ -3,29 +3,19 @@ from sqlalchemy.types import Unicode, Integer, DateTime
 from sqlalchemy.orm import backref, relation
 
 from calendarevents.model import DeclarativeBase
-from calendarevents.model import DBSession
-from datetime import datetime
-import pywapi
-import tg
+from calendarevents.lib.event_type import lookup_event_type
+from calendarevents.lib.weather import get_weather_for_date
 
 class Calendar(DeclarativeBase):
     __tablename__ = 'calendarevents_calendar'
 
     uid = Column(Integer, autoincrement=True, primary_key=True)
     name = Column(Unicode(64))
-    associated_resources = Column(Unicode(64))
+    events_type = Column(Unicode(64))
 
-    def view_events(self):
-        events = DBSession.query(CalendarEvent).filter_by(calendar_id=self.uid).all()
-        events_list = []
-        for event in events:
-            events_list.append(event.event_details())
-        return events_list
-
-    def add_event(self, name, datetime, summary, location):
-        new_event = CalendarEvent(calendar_id=self.uid,name=name, summary=summary, datetime=datetime, location=location)
-        DBSession.add(new_event)
-
+    @property
+    def events_type_info(self):
+        return lookup_event_type(self.events_type)
 
 class CalendarEvent(DeclarativeBase):
     __tablename__ = 'calendarevents_event'
@@ -42,32 +32,18 @@ class CalendarEvent(DeclarativeBase):
     linked_entity_id = Column(Integer, nullable=False, index=True)
     linked_entity_type = Column(Unicode(255), nullable=False, index=True)
 
+    @property
+    def event_type(self):
+        return lookup_event_type(self.linked_entity_type)
 
     @property
     def linked_entity_url(self):
-        linked_entity_config = tg.config['_calendarevents']['entities'][self.linked_entity_type]
-        linked_entity_resolver = linked_entity_config[2]
-        return linked_entity_resolver(self.linked_entity_id)
+        return self.event_type.get_linked_entity_url(self)
 
     @property
-    def linked_entity_title(self):
-        linked_entity_config = tg.config['_calendarevents']['entities'][self.linked_entity_type]
-        linked_entity_resolver = lambda b:linked_entity_config[1]
-        return linked_entity_resolver(self.linked_entity_id)
+    def linked_entity_info(self):
+        return self.event_type.get_linked_entity_info(self)
 
     @property
     def weather(self):
-        today_to_event = (self.datetime - datetime.now()).days
-        weather = "Weather conditions not avaliable"
-        if datetime.now() < self.datetime:
-            if today_to_event < 1:
-                weather = pywapi.get_weather_from_google(self.location, hl='it')
-                weather = weather['current_conditions']['condition']
-            elif today_to_event < 5:
-                weather = pywapi.get_weather_from_google(self.location, hl='it')
-                weather = weather['forecasts'][today_to_event]['condition']
-        return weather
-    
-    
-    def event_details(self):
-        return self
+        return get_weather_for_date(self.location, self.datetime)

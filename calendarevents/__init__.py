@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """The tgapp-calendarevents package"""
 
-from tg import config
-from calendarevents import model
+import tg
+from calendarevents.lib.event_type import EventType
 
 def plugme(app_config, options):
-    config['_calendarevents'] = options
+    tg.config['_calendarevents'] = options
     return dict(appid='calendarevents', global_helpers=False)
 

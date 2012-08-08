@@ -11,7 +11,6 @@ from calendarevents.model import DBSession
 from tgext.pluggable import plug_redirect
 
 from .calendar import CalendarController
-from calendarevents.lib import get_form
 from calendarevents.lib.forms import new_calendar_form
 
 class RootController(TGController):
@@ -30,15 +29,12 @@ class RootController(TGController):
     def newcalendar(self, **kw):
         return dict(form=new_calendar_form)
 
-    @expose('calendarevents.templates.addcalendar')
-    @validate(new_calendar_form)
-    def addcalendar(self, **kw):
-        new_calendar = model.Calendar(name=kw['type'], associated_resources=kw['associated_resources'])
-        try:
-            model.DBSession.add(new_calendar)
-            print "-------->OK"
-            flash(_('Calendar successfully added'))
-        except:
-            flash(_('There was a problem adding your calendar'))
+    @expose()
+    @validate(new_calendar_form, error_handler=newcalendar)
+    def addcalendar(self, name, events_type):
+        new_calendar = model.Calendar(name=name, events_type=events_type)
+        model.DBSession.add(new_calendar)
+        model.DBSession.flush()
+        flash(_('Calendar successfully added'))
         return plug_redirect('calendarevents', '/calendar/%s' % new_calendar.uid)
         

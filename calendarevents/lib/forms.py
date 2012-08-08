@@ -7,7 +7,6 @@ from tg import config
 from tg.i18n import lazy_ugettext as l_
 from calendarevents import model
 
-
 class NewEventForm(TableForm):
     class fields(WidgetsList):
         cal = HiddenField(validator=SQLAEntityConverter(model.Calendar))
@@ -20,8 +19,8 @@ class NewEventForm(TableForm):
 
 class NewCalendarForm(TableForm):
     class fields(WidgetsList):
-        type = TextField(label_text=l_("Calendar's Event Type"), validator=validators.UnicodeString(not_empty=True))
-        associated_resources = SingleSelectField(label_text=l_('Associated resources'),
-                                                 options=lambda: config['_calendarevents']['entities'].keys(),
-                                                 validator=validators.UnicodeString(not_empty=False))
+        name = TextField(label_text=l_("Calendar Name"), validator=validators.UnicodeString(not_empty=True))
+        events_type = SingleSelectField(label_text=l_('Events Type'),
+                                        options=lambda: [e.name for e in config['_calendarevents']['event_types']],
+                                        validator=validators.UnicodeString(not_empty=False))
 new_calendar_form = NewCalendarForm()

@@ -9,22 +9,22 @@
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" py:if="False"/>
     <title>Calendar view</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/_pluggable/registration/css/style.css')}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/_pluggable/calendarevents/css/style.css')}" />
 </head>
 
 <body>
-  <p py:for="event in cal" class="event">
+  <p py:for="event in cal.events" class="event">
   Titolo evento: ${event.name}
   <br />
   Data evento: ${event.datetime}
   <br />
-  Che tempo farà: ${event.weather}
+  Che tempo farà: <img src="http://www.google.com/${event.weather['icon']}"/>
   <br />
   Breve descrizione dell'evento: ${event.summary}
   <br />
-  <a href="${event.linked_entity_url}">${event.linked_entity_title}</a>
+  <a href="${event.linked_entity_url}">${event.linked_entity_info}</a>
   </p>
-    <a href="./newevent/${calendar.uid}">Add event</a>
-    <a href="../calendarlist">Back to Calendars list</a>
+
+    <a href="./newevent/${cal.uid}">Add event</a>
 	</body>
 </html>
