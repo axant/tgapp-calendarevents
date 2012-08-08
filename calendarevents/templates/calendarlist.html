@@ -8,13 +8,15 @@
 
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" py:if="False"/>
-    <title>Create new event</title>
+    <title>Calendars list</title>
     <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/_pluggable/registration/css/style.css')}" />
 </head>
-
 <body>
-<h2>Insert new event's details</h2>
-${form(value=dict(cal=cal), child_args=dict(linked_entity={'options':linkable_entities}), action=h.plug_url('calendarevents', '/calendar/addevent'))}
-<a href="../${cal.uid}">Cancel and return to Event list</a>
+    <p py:for="calendar in calendar_list">
+        <a href="./calendar/${calendar.uid}">${calendar.name}</a>
+    <br />
+    Associated resources type = ${calendar.associated_resources}
+    </p>
+    <a href="./newcalendar">Add a Calendar</a>
 </body>
 </html>

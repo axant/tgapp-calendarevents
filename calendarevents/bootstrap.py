@@ -18,7 +18,7 @@ def bootstrap(command, conf, vars):
 
     c = model.DBSession.query(model.Calendar).first()
     if not c:
-        c = model.Calendar(name='default')
+        c = model.Calendar(name='default', associated_resources='links')
         model.DBSession.add(c)
 
     e = model.DBSession.query(model.CalendarEvent).first()
