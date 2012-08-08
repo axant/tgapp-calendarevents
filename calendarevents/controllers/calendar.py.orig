@@ -28,12 +28,9 @@ class CalendarController(TGController):
     @expose()
     @validate(get_form(), error_handler=newevent)
     def addevent(self, cal, **kw):
-        new_event = model.CalendarEvent(calendar_id=cal.uid,name=kw['name'], summary=kw['summary'], datetime=kw['datetime'], location=kw['location'])
-        try:
-            model.DBSession.add(new_event)
-            flash(_('Event successfully added'))
-        except:
-            flash(_('There was a problem adding your event'))
+        print "---->" + str(kw['datetime'])
+        print "---->" + str(cal.uid)
+        flash(_('Event successfully added'))
         return plug_redirect('calendarevents', '/calendar/%s' % cal.uid)
 
 
