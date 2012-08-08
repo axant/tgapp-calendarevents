@@ -7,5 +7,5 @@ from calendarevents import model
 
 class NewEventForm(TableForm):
     class fields(WidgetsList):
-        cal = HiddenField(validator=validators.Int(not_empty=True))
+        cal = HiddenField(validator=SQLAEntityConverter(model.Calendar))
         name = TextField(label_text=l_('Event Name'), validator=validators.UnicodeString(not_empty=True))

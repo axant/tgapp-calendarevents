@@ -23,8 +23,6 @@ class CalendarController(TGController):
     @validate(dict(cal=SQLAEntityConverter(model.Calendar)),
               error_handler=fail_with(403))
     def newevent(self, cal, **kw):
-        if isinstance(cal, basestring):
-            cal = SQLAEntityConverter(model.Calendar).to_python(cal)
         return dict(cal=cal, form=get_form())
 
     @expose()
@@ -32,7 +30,7 @@ class CalendarController(TGController):
     def addevent(self, cal, **kw):
         print kw
         flash(_('Event successfully added'))
-        return plug_redirect('calendarevents', '/calendar/%s' % cal)
+        return plug_redirect('calendarevents', '/calendar/%s' % cal.uid)
 
 
 """
