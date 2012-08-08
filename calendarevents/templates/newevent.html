@@ -8,11 +8,12 @@
 
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" py:if="False"/>
-    <title>Register New User</title>
+    <title>Create new event</title>
     <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/_pluggable/registration/css/style.css')}" />
 </head>
 
 <body>
+<h2>Insert new event's details</h2>
 ${form(value=dict(cal=cal), action=h.plug_url('calendarevents', '/calendar/addevent'))}
 </body>
 </html>

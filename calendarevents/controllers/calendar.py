@@ -28,7 +28,8 @@ class CalendarController(TGController):
     @expose()
     @validate(get_form(), error_handler=newevent)
     def addevent(self, cal, **kw):
-        print kw
+        print "---->" + str(kw['datetime'])
+        print "---->" + str(cal.uid)
         flash(_('Event successfully added'))
         return plug_redirect('calendarevents', '/calendar/%s' % cal.uid)
 
