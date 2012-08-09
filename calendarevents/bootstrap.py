@@ -16,15 +16,6 @@ def bootstrap(command, conf, vars):
     if u1:
         g.users.append(u1)
 
-    c = model.DBSession.query(model.Calendar).first()
-    if not c:
-        c = model.Calendar(name='default', associated_resources='links')
-        model.DBSession.add(c)
-
-    e = model.DBSession.query(model.CalendarEvent).first()
-    if not e:
-        e = model.CalendarEvent(calendar_id=c.uid,name='default_event', summary='default_description', datetime=datetime.now(), location='torino,it')
-        model.DBSession.add(e)
 
     model.DBSession.flush()
 

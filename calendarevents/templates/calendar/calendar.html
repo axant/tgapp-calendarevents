@@ -9,13 +9,16 @@
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" py:if="False"/>
     <title>Calendar view</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/_pluggable/calendarevents/css/style.css')}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/_pluggable/calendarevents/css/calendar.css')}" />
 </head>
 
 <body>
-    <div py:for="event in cal.events" class="calendarevents_event">
-        ${h.call_partial('calendarevents.partials:event', event=event)}
-    </div>
+    <p class="calendarevents_calendar_title">${cal.name}</p>
     <a class="calendarevents_addevent" href="./newevent/${cal.uid}">Add event</a>
+    <div class="calendarevents_event_list">
+        <div py:for="event in cal.events" class="calendarevents_event">
+            ${h.call_partial('calendarevents.partials:event', event=event)}
+        </div>
+    </div>
 </body>
 </html>
