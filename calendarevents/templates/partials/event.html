@@ -7,7 +7,8 @@
     </div>
     <div class="calendarevents_event_weather">
         <img src="http://www.google.com/${calendar_event.weather['icon']}"/>
-        <span>${calendar_event.weather['temp_c']}</span>
+        <span py:if="calendar_event.weather['temp_c']">${calendar_event.weather['temp_c']} °C</span>
+        <span py:else="">${calendar_event.weather['low']}/${calendar_event.weather['high']} °F</span>
     </div>
     <div class="calendarevents_event_summary">${calendar_event.summary}</div>
     <div class="calendarevents_event_linked_entity_info">
