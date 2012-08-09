@@ -49,5 +49,5 @@ class RootController(TGController):
     @expose('calendarevents.templates.event_display')
     @validate(dict(event=SQLAEntityConverter(model.CalendarEvent)),
         error_handler=fail_with(404))
-    def event_display(self, event):
+    def event(self, event):
         return dict(event=event)
