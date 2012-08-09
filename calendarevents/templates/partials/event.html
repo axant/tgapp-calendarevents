@@ -1,7 +1,7 @@
 <div xmlns:py="http://genshi.edgewall.org/"
      class="calendarevents_event">
     <div class="calendarevents_event_weather">
-        <img src="http://www.google.com/${calendar_event.weather['icon']}"/>
+        <img src="${calendar_event.weather['icon']}"/>
         <span py:if="'temp_c' in calendar_event.weather">${calendar_event.weather['temp_c']}</span>
         <span py:if="'temp_c' not in calendar_event.weather">${calendar_event.weather['low']}/${calendar_event.weather['high']}</span>
     </div>

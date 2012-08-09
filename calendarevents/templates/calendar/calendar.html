@@ -14,7 +14,7 @@
 
 <body>
     <div py:for="event in cal.events" class="calendarevents_event">
-        ${h.call_partial('calendarevents.partials:event', name='event')}
+        ${h.call_partial('calendarevents.partials:event', event=event)}
     </div>
     <a class="calendarevents_addevent" href="./newevent/${cal.uid}">Add event</a>
 </body>

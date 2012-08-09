@@ -6,6 +6,8 @@ from calendarevents.model import DeclarativeBase
 from calendarevents.lib.event_type import lookup_event_type
 from calendarevents.lib.weather import get_weather_for_date
 
+from tg.decorators import cached_property
+
 class Calendar(DeclarativeBase):
     __tablename__ = 'calendarevents_calendar'
 
@@ -44,6 +46,6 @@ class CalendarEvent(DeclarativeBase):
     def linked_entity_info(self):
         return self.event_type.get_linked_entity_info(self)
 
-    @property
+    @cached_property
     def weather(self):
         return get_weather_for_date(self.location, self.datetime)
