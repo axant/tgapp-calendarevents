@@ -3,7 +3,6 @@
 
 from calendarevents import model
 from tgext.pluggable import app_model
-from datetime import datetime
 
 def bootstrap(command, conf, vars):
     print 'Bootstrapping calendarevents...'
@@ -15,7 +14,6 @@ def bootstrap(command, conf, vars):
     u1 = model.DBSession.query(app_model.User).filter_by(user_name='manager').first()
     if u1:
         g.users.append(u1)
-
 
     model.DBSession.flush()
 

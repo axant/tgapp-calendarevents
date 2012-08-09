@@ -3,12 +3,15 @@ from tg import expose, flash, require, url, lurl, request, redirect, validate, c
 from tg.i18n import ugettext as _, lazy_ugettext as l_
 
 from calendarevents import model
+from calendarevents.model import DBSession
 
 from tgext.pluggable import plug_redirect
 from tgext.datahelpers.validators import SQLAEntityConverter
 from tgext.datahelpers.utils import fail_with, object_primary_key
 
 from calendarevents.lib import get_form
+from calendarevents.model.models import CalendarEvent
+from repoze.what import predicates
 import json
 
 class CalendarController(TGController):
@@ -25,6 +28,7 @@ class CalendarController(TGController):
     def list(self, cal):
         return dict(cal=cal)
 
+    @require(predicates.in_group('calendarevents'))
     @expose('calendarevents.templates.calendar.newevent')
     @validate(dict(cal=SQLAEntityConverter(model.Calendar)),
               error_handler=fail_with(403))
@@ -40,6 +44,7 @@ class CalendarController(TGController):
 
         return dict(cal=cal, form=get_form(), linkable_entities=linkable_entities)
 
+    @require(predicates.in_group('calendarevents'))
     @expose()
     @validate(get_form(), error_handler=newevent)
     def addevent(self, cal, **kw):
@@ -52,3 +57,10 @@ class CalendarController(TGController):
         flash(_('Event successfully added'))
         return plug_redirect('calendarevents', '/calendar/%s' % cal.uid)
 
+    @require(predicates.in_group('calendarevents'))
+    @expose()
+    @validate(dict(event=SQLAEntityConverter(model.CalendarEvent)),
+              error_handler=fail_with(404))
+    def remove_event(self, event):
+        DBSession.delete(event)
+        return redirect(request.referer)

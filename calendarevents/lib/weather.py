@@ -25,9 +25,9 @@ def get_weather_language():
 def get_weather_for_date(location, date):
     @entitycached('cache_key', expire=24*3600)
     def get_cached_weater(cache_key, location, date):
+        weather = {}
+
         today_to_event = (date - datetime.now()).days
-        weather = {'icon':tg.url('/_pluggable/calendarevents/images/noweather.png'),
-                   'temp_c':'', 'low':'', 'high':''}
         if today_to_event >= -1:
             if today_to_event < 1:
                 weather = pywapi.get_weather_from_google(location, hl=get_weather_language())
@@ -39,6 +39,11 @@ def get_weather_for_date(location, date):
                 weather = weather['forecasts'][today_to_event]
                 if 'icon' in weather:
                     weather['icon'] = 'http://www.google.com' + weather['icon']
+
+        if not weather:
+            weather = {'icon':tg.url('/_pluggable/calendarevents/images/noweather.png'),
+                       'temp_c':'', 'low':'', 'high':''}
+
         return weather
 
     try:

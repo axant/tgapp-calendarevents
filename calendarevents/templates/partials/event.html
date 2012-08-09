@@ -6,7 +6,16 @@
         <span py:if="'temp_c' not in calendar_event.weather">${calendar_event.weather['low']}/${calendar_event.weather['high']}</span>
     </div>
     <div class="calendarevents_event_info">
-        <div class="calendarevents_event_name">${calendar_event.name}</div>
+        <a py:if="request.identity and 'calendarevents' in request.identity['groups']"
+           class="calendarevents_remove_event" href="./remove_event/${calendar_event.uid}"
+           onclick="confirm('Do you really want to remove the event?')">
+            <img src="${tg.url('/_pluggable/calendarevents/images/trash.gif')}" />
+        </a>
+        <div class="calendarevents_event_name">
+            <a href="${h.plug_url('calendarevents', '/event_display/%s' % calendar_event.uid)}">
+                ${calendar_event.name}
+            </a>
+        </div>
         <div class="calendarevents_event_datetime">${calendar_event.datetime}</div>
         <div class="calendarevents_event_location">${calendar_event.location}</div>
     </div>
