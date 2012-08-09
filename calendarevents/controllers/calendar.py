@@ -18,6 +18,12 @@ class CalendarController(TGController):
     def _default(self, cal):
         return dict(cal=cal)
 
+    @expose('calendarevents.templates.calendar.list')
+    @validate(dict(cal=SQLAEntityConverter(model.Calendar)),
+              error_handler=fail_with(404))
+    def list(self, cal):
+        return dict(cal=cal)
+
     @expose('calendarevents.templates.calendar.newevent')
     @validate(dict(cal=SQLAEntityConverter(model.Calendar)),
               error_handler=fail_with(403))

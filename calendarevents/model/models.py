@@ -30,7 +30,8 @@ class CalendarEvent(DeclarativeBase):
     location = Column(Unicode(255), nullable=False)
 
     calendar_id = Column(Integer, ForeignKey(Calendar.uid), nullable=False)
-    calendar = relation(Calendar, backref=backref('events', cascade='all, delete-orphan'))
+    calendar = relation(Calendar, backref=backref('events', order_by='CalendarEvent.datetime.desc()',
+                                                            cascade='all, delete-orphan'))
 
     linked_entity_id = Column(Integer, nullable=False, index=True)
     linked_entity_type = Column(Unicode(255), nullable=False, index=True)
