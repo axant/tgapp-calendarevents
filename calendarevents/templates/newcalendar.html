@@ -13,8 +13,10 @@
 </head>
 
 <body>
-<h2>Insert new calendar's details</h2>
-${form(action=h.plug_url('calendarevents', '/addcalendar'))}
-<a href="./calendarlist">Cancel and return to Calendar list</a>
+    <h2 class="calendarevents_head">Insert new calendar's details</h2>
+    <div class="calendarevents_form">
+        ${form(action=h.plug_url('calendarevents', '/addcalendar'))}
+    </div>
+    <a class="calendarevents_cancel" href="./calendarlist">Cancel and return to Calendar list</a>
 </body>
 </html>

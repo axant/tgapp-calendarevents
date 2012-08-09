@@ -13,18 +13,7 @@
 </head>
 
 <body>
-  <p py:for="event in cal.events" class="event">
-  Titolo evento: ${event.name}
-  <br />
-  Data evento: ${event.datetime}
-  <br />
-  Che tempo farà: <img src="http://www.google.com/${event.weather['icon']}"/>
-  <br />
-  Breve descrizione dell'evento: ${event.summary}
-  <br />
-  <a href="${event.linked_entity_url}">${event.linked_entity_info}</a>
-  </p>
-
-    <a href="./newevent/${cal.uid}">Add event</a>
-	</body>
+    ${h.call_partial('calendarevents.partials:event', name='Event')}
+    <a class="calendarevents_addevent" href="./newevent/${cal.uid}">Add event</a>
+</body>
 </html>

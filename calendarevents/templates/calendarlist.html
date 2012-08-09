@@ -12,11 +12,10 @@
     <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/_pluggable/calendarevents/css/style.css')}" />
 </head>
 <body>
-    <p py:for="calendar in calendar_list">
-        <a href="./calendar/${calendar.uid}">${calendar.name}</a>
-    <br />
-    Associated resources type = ${calendar.associated_resources}
+    <p py:for="calendar in calendar_list" class="calendarevents_calendars_list">
+        <a class="calendarevents_calendar_name" href="./calendar/${calendar.uid}">${calendar.name}</a>
+        <p class="calendarevents_calendar_events_type">${calendar.events_type}</p>
     </p>
-    <a href="./newcalendar">Add a Calendar</a>
+    <a class="calendarevents_add_calendar" href="./newcalendar">Add a Calendar</a>
 </body>
 </html>

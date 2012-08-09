@@ -1,5 +1,8 @@
 from tg import expose
+from calendarevents import model
+from calendarevents.model import DBSession
 
-@expose('calendarevents.templates.little_partial')
-def something(name):
-    return dict(name=name)
+
+@expose('calendarevents.templates.partials.event')
+def event(self, event):
+    return dict(calendar_event=event)
