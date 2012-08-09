@@ -3,20 +3,21 @@ from tg import expose, flash, require, url, lurl, request, redirect, validate, c
 from tg.i18n import ugettext as _, lazy_ugettext as l_
 
 from calendarevents import model
-from calendarevents.model import DBSession
 
 from tgext.pluggable import plug_redirect
 from tgext.datahelpers.validators import SQLAEntityConverter
 from tgext.datahelpers.utils import fail_with, object_primary_key
 
 from calendarevents.lib import get_form
+import json
 
 class CalendarController(TGController):
     @expose('calendarevents.templates.calendar.calendar')
     @validate(dict(cal=SQLAEntityConverter(model.Calendar)),
             error_handler=fail_with(404))
     def _default(self, cal):
-        return dict(cal=cal)
+        events = [{'uid':e.uid, 'title':e.name, 'start':e.datetime.strftime('%Y-%m-%d %H:%M')} for e in cal.events]
+        return dict(cal=cal, events=json.dumps(events))
 
     @expose('calendarevents.templates.calendar.list')
     @validate(dict(cal=SQLAEntityConverter(model.Calendar)),

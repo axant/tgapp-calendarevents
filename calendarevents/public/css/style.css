@@ -23,6 +23,10 @@
     line-height: 64px;
 }
 
+#calendarevents_calendar {
+    margin-top: 16px;
+}
+
 #calendarevents_calendar_title {
     text-transform: capitalize;
 }
