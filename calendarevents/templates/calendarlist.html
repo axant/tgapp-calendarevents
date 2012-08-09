@@ -9,14 +9,17 @@
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" py:if="False"/>
     <title>Calendars list</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/_pluggable/calendarevents/css/calendarlist.css')}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/_pluggable/calendarevents/css/style.css')}" />
 </head>
 <body>
-    <h2 class="calendarevents_list_title">Calendars list</h2>
-    <a class="calendarevents_add_calendar" href="./newcalendar">Add a Calendar</a>
-    <div py:for="calendar in calendar_list" class="calendarevents_calendars_list_element">
-        <a class="calendarevents_calendar_name" href="./calendar/${calendar.uid}">${calendar.name}</a>
-        <p class="calendarevents_calendar_events_type">Entity linked to events: ${calendar.events_type}</p>
+    <h2 class="calendarevents_list_title">Available Calendars</h2>
+    <div id="calendarevents_add_calendar">
+        <a href="./newcalendar">Add a Calendar</a>
+    </div>
+    <div id="calendarevents_calendars">
+        <div py:for="calendar in calendar_list" class="calendarevents_calendars_entry">
+            <a class="calendarevents_calendars_name" href="./calendar/${calendar.uid}">${calendar.name}</a>
+        </div>
     </div>
 </body>
 </html>

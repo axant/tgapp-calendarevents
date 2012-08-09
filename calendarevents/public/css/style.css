@@ -1,19 +1,55 @@
-.calendarevents_calendar_title {
-	color: #666;
-	font-weight: bold;
-}
-.calendarevents_addevent{
-	padding: 5px;
-	border: thin solid #666;
-	text-decoration: none;
-}
-.calendarevents_addevent:hover{
-	background: #bbb;
-}
-.calendarevents_event {
-	padding: 5px;
-	margin: 5px;
-	border: thin solid #666;
-	float: right;
+#calendarevents_add_calendar, #calendarevents_add_event{
+    text-decoration: none;
 }
 
+#calendarevents_add_calendar:hover, #calendarevents_add_event:hover {
+    text-decoration: underline;
+}
+
+#calendarevents_calendars {
+    margin-top: 32px;
+}
+
+.calendarevents_calendars_entry {
+    font-size: 18px;
+    text-transform: capitalize;
+    height: 64px;
+    background-image: url('/_pluggable/calendarevents/images/calendar.png');
+    background-repeat: no-repeat;
+    padding-left: 72px;
+}
+
+.calendarevents_calendars_name {
+    line-height: 64px;
+}
+
+#calendarevents_calendar_title {
+    text-transform: capitalize;
+}
+
+#calendarevents_events {
+    margin-top: 32px;
+}
+
+.calendarevents_event {
+    width: 320px;
+    margin-bottom: 48px;
+    font-size: 13px;
+}
+
+.calendarevents_event .calendarevents_event_name {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.calendarevents_event .calendarevents_event_summary {
+    margin-top: 7px;
+}
+
+.calendarevents_event .calendarevents_event_weather {
+    float: right;
+}
+
+.calendarevents_event .calendarevents_event_summary {
+    clear: both;
+}
