@@ -1,14 +1,14 @@
 <div xmlns:py="http://genshi.edgewall.org/"
      class="calendarevents_event">
-    <div class="calendarevents_event_info">
-        <div class="calendarevents_event_name">${calendar_event.name}</div>
-        <div class="calendarevents_event_datetime">${calendar_event.datetime}</div>
-        <div class="calendarevents_event_location">${calendar_event.location}</div>
-    </div>
     <div class="calendarevents_event_weather">
         <img src="http://www.google.com/${calendar_event.weather['icon']}"/>
         <span py:if="'temp_c' in calendar_event.weather">${calendar_event.weather['temp_c']}</span>
         <span py:if="'temp_c' not in calendar_event.weather">${calendar_event.weather['low']}/${calendar_event.weather['high']}</span>
+    </div>
+    <div class="calendarevents_event_info">
+        <div class="calendarevents_event_name">${calendar_event.name}</div>
+        <div class="calendarevents_event_datetime">${calendar_event.datetime}</div>
+        <div class="calendarevents_event_location">${calendar_event.location}</div>
     </div>
     <div class="calendarevents_event_summary">${calendar_event.summary}</div>
     <div class="calendarevents_event_linked_entity_info">
