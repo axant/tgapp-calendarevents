@@ -62,5 +62,6 @@ class CalendarController(TGController):
     @validate(dict(event=SQLAEntityConverter(model.CalendarEvent)),
               error_handler=fail_with(404))
     def remove_event(self, event):
+        calendar_id = event.calendar_id
         DBSession.delete(event)
-        return redirect(request.referer)
+        return plug_redirect('calendarevents', '/calendar/%s' % calendar_id)
