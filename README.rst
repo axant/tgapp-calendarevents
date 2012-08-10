@@ -1,7 +1,16 @@
 About calendarevents
 -------------------------
 
-calendarevents is a Pluggable application for TurboGears2.
+calendarevents is a Pluggable calendars and events application for TurboGears2.
+It permits to create events which are associated to entities defined inside the
+application which plugs it in.
+
+Calendarevents provides support for multiple calendars and event types, by defining
+new event types it is possible to define how the event relates to external entities
+like a blog post that describes it.
+
+When displaying events if available weather informations for the day and location
+of the event will be provided.
 
 Installing
 -------------------------------
@@ -21,28 +30,40 @@ In your application *config/app_cfg.py* import **plug**::
 
 Then at the *end of the file* call plug with calendarevents::
 
-    plug(base_config, 'calendarevents')
+    plug(base_config, 'calendarevents', event_types=[...])
 
-You will be able to access the registration process at
+At least one event type must be defined inside the *event_types* argument.
+Defining event types is explained inside the Event Types section.
+
+You will be able to access the calendars at
 *http://localhost:8080/calendarevents*.
 
-Available Hooks
+Event Types
 ----------------------
 
-calendarevents makes available a some hooks which will be
-called during some actions to alter the default
-behavior of the appplications:
+calendarevents needs the application to define at least one EventType to work.
+
+Event types must be defined inheriting from the ``calendarevents.EventType`` class,
+for example to define an event for a concert which relates to a blog article that
+describes the concert itself::
+
+    class Concert(EventType):
+        name = 'Concert'
+
+        def get_linkable_entities(self, calendar):
+            return [(a.uid, a.title) for a in model.DBSession.query(model.Article)]
+
+        def get_linked_entity_info(self, event):
+            return model.DBSession.query(model.Article).get(event.linked_entity_id).title
+
+        def get_linked_entity_url(self, event):
+            return tg.url('/blog/view/%s' % event.linked_entity_id)
+
+    plug(base_config, 'calendarevents', event_types=[Concert()])
 
 Exposed Partials
 ----------------------
 
-calendarevents exposes a bunch of partials which can be used
-to render pieces of the blogging system anywhere in your
-application:
+calendarevents exposes a partial to render event boxes inside other pages:
 
-Exposed Templates
---------------------
-
-The templates used by registration and that can be replaced with
-*tgext.pluggable.replace_template* are:
-
+- calendarevents.partials:event(event) - Renders an event box
