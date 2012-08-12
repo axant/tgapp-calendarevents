@@ -67,7 +67,7 @@
 .calendarevents_event .calendarevents_event_summary {
     clear: both;
 }
-.calendarevents_remove_event{
+.calendarevents_remove_event .calendarevents_modify_event{
     float: left;
     margin-right: 5px;
 }

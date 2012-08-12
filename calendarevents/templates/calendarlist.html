@@ -14,11 +14,11 @@
 <body>
     <h2 class="calendarevents_list_title">Available Calendars</h2>
     <div id="calendarevents_add_calendar">
-        <a href="./newcalendar">Add a Calendar</a>
+        <a href="${h.plug_url('calendarevents', '/newcalendar')}">Add a Calendar</a>
     </div>
     <div id="calendarevents_calendars">
         <div py:for="calendar in calendar_list" class="calendarevents_calendars_entry">
-            <a class="calendarevents_calendars_name" href="./calendar/${calendar.uid}">${calendar.name}</a>
+            <a class="calendarevents_calendars_name" href="${h.plug_url('calendarevents', '/calendar/%s') % calendar.uid}">${calendar.name}</a>
         </div>
     </div>
 </body>

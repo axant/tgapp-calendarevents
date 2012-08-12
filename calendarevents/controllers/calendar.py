@@ -3,6 +3,7 @@ from tg import expose, flash, require, url, lurl, request, redirect, validate, c
 from tg.i18n import ugettext as _, lazy_ugettext as l_
 
 from calendarevents import model
+from calendarevents.lib.forms import get_modevent_form
 from calendarevents.model import DBSession
 
 from tgext.pluggable import plug_redirect
@@ -65,3 +66,24 @@ class CalendarController(TGController):
         calendar_id = event.calendar_id
         DBSession.delete(event)
         return plug_redirect('calendarevents', '/calendar/%s' % calendar_id)
+
+    @require(predicates.in_group('calendarevents'))
+    @expose('calendarevents.templates.calendar.modevent')
+    @validate(dict(event=SQLAEntityConverter(model.CalendarEvent)),
+        error_handler=fail_with(404))
+    def modevent(self, event, **kw):
+        return dict(event=event, form=get_modevent_form())
+
+
+    @require(predicates.in_group('calendarevents'))
+    @expose()
+    @validate(dict(event=SQLAEntityConverter(model.CalendarEvent)),
+        error_handler=fail_with(404))
+    def modify_event(self, event):
+        event.name=kw['name']
+        event.summary=kw['summary'], datetime=kw['datetime']
+        event.location=kw['location']
+        event.linked_entity_id=kw.get('linked_entity')
+        DBSession.update(event)
+        flash(_('Event successfully modified'))
+        return plug_redirect('calendarevents', '/calendar/%s' % cal.uid)
