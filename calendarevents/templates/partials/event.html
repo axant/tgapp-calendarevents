@@ -12,7 +12,7 @@
     <div class="calendarevents_event_info">
         <a py:if="request.identity and 'calendarevents' in request.identity['groups']"
            class="calendarevents_remove_event" href="${h.plug_url('calendarevents', '/calendar/remove_event/%s' % calendar_event.uid)}"
-           onclick="confirm('Do you really want to remove the event?')">
+           onclick="return confirm('Do you really want to remove the event?')">
             <img src="${tg.url('/_pluggable/calendarevents/images/trash.gif')}" />
         </a>
         <a py:if="request.identity and 'calendarevents' in request.identity['groups']"

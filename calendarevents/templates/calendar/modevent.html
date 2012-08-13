@@ -15,7 +15,7 @@
 <body>
 <h2 class="calendarevents_head">Modify event's details</h2>
 <div class="calendarevents_form">
-    ${form(value=dict(cal=cal), child_args=dict(linked_entity={'options':linkable_entities}), action=h.plug_url('calendarevents', '/calendar/modify_event'))}
+    ${form(value=dict(event=event.uid, cal=cal, name=event.name, summary=event.summary, location=event.location, linked_entity=event.linked_entity_id), child_args=dict(linked_entity={'options':linkable_entities}), action=h.plug_url('calendarevents', '/calendar/modify_event'))}
 </div>
 <a class="calendarevents_cancel" href="${h.plug_url('calendarevents', '/calendar/%s') % cal.uid}">Cancel and return to Calendar</a>
 </body>

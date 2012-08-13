@@ -9,6 +9,7 @@ from calendarevents import model
 
 class NewEventForm(TableForm):
     class fields(WidgetsList):
+        event = HiddenField()
         cal = HiddenField(validator=SQLAEntityConverter(model.Calendar))
         name = TextField(label_text=l_('Event Name'), validator=validators.UnicodeString(not_empty=True))
         summary = TextArea(label_text=l_('Event short summary'), validator=validators.UnicodeString(not_empty=False))
@@ -16,17 +17,6 @@ class NewEventForm(TableForm):
         location = TextField(label_text=l_('Event Location (es: turin,it)'),
                              validator=validators.UnicodeString(not_empty=True))
         linked_entity = SingleSelectField(label_text=l_('Linked Entity'))
-
-class ModEventForm(TableForm):
-    class fields(WidgetsList):
-        cal = HiddenField(validator=SQLAEntityConverter(model.Calendar))
-        name = TextField(label_text=l_('Event Name'), validator=validators.UnicodeString(not_empty=True))
-        summary = TextArea(label_text=l_('Event short summary'), validator=validators.UnicodeString(not_empty=False))
-        datetime = CalendarDateTimePicker(label_text=l_('Event date'))
-        location = TextField(label_text=l_('Event Location (es: turin,it)'),
-            validator=validators.UnicodeString(not_empty=True))
-        linked_entity = SingleSelectField(label_text=l_('Linked Entity'))
-get_modevent_form = ModEventForm()
 
 class NewCalendarForm(TableForm):
     class fields(WidgetsList):

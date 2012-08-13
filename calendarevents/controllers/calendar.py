@@ -1,9 +1,9 @@
+from datetime import datetime
 from tg import TGController
 from tg import expose, flash, require, url, lurl, request, redirect, validate, config
 from tg.i18n import ugettext as _, lazy_ugettext as l_
 
 from calendarevents import model
-from calendarevents.lib.forms import get_modevent_form
 from calendarevents.model import DBSession
 
 from tgext.pluggable import plug_redirect
@@ -70,20 +70,32 @@ class CalendarController(TGController):
     @require(predicates.in_group('calendarevents'))
     @expose('calendarevents.templates.calendar.modevent')
     @validate(dict(event=SQLAEntityConverter(model.CalendarEvent)),
-        error_handler=fail_with(404))
+              error_handler=fail_with(404))
     def modevent(self, event, **kw):
-        return dict(event=event, form=get_modevent_form())
+        if isinstance(event, basestring):
+            event = SQLAEntityConverter(model.CalendarEvent).to_python(event)
+
+        cal = event.calendar
+        event_type = cal.events_type_info
+
+        if not event_type:
+            linkable_entities = []
+        else:
+            linkable_entities = event_type.get_linkable_entities(cal)
+
+        return dict(cal=cal, event=event, linkable_entities=linkable_entities, form=get_form())
 
 
     @require(predicates.in_group('calendarevents'))
     @expose()
-    @validate(dict(event=SQLAEntityConverter(model.CalendarEvent)),
-        error_handler=fail_with(404))
-    def modify_event(self, event):
+    @validate(get_form(), error_handler=modevent)
+    def modify_event(self, event, **kw):
+        event = DBSession.query(model.CalendarEvent).get(event)
         event.name=kw['name']
-        event.summary=kw['summary'], datetime=kw['datetime']
+        event.summary=kw['summary']
+        event.datetime=kw['datetime']
         event.location=kw['location']
         event.linked_entity_id=kw.get('linked_entity')
-        DBSession.update(event)
+        #DBSession.update(event)
         flash(_('Event successfully modified'))
-        return plug_redirect('calendarevents', '/calendar/%s' % cal.uid)
+        return plug_redirect('calendarevents', '/calendar/%s' % event.calendar_id)
