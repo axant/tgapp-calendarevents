@@ -40,7 +40,8 @@ class CalendarController(TGController):
 
     @expose()
     @require(predicates.in_group('calendarevents'))
-    @validate(new_calendar_form, error_handler=new)
+    @validate(new_calendar_form,
+              error_handler=validated_handler(new))
     def save(self, name, events_type):
         new_calendar = model.Calendar(name=name, events_type=events_type)
         model.DBSession.add(new_calendar)
