@@ -8,19 +8,18 @@
 
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" py:if="False"/>
-    <title>Calendar view</title>
+    <title>Calendars list</title>
     <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/_pluggable/calendarevents/css/style.css')}" />
 </head>
-
 <body>
-    <h2 id="calendarevents_calendar_title">${cal.name}</h2>
-    <div id="calendarevents_add_event">
-        <a href="${h.plug_url('calendarevents', '/event/')}./newevent/${cal.uid}">Add event</a>
+    <h2 class="calendarevents_list_title">Available Calendars</h2>
+    <div id="calendarevents_add_calendar">
+        <a href="${h.plug_url('calendarevents', '/calendar/new')}">Add a Calendar</a>
     </div>
-    <div id="calendarevents_events">
-        <py:for each="event in cal.events">
-            ${h.call_partial('calendarevents.partials:event', event=event)}
-        </py:for>
+    <div id="calendarevents_calendars">
+        <div py:for="calendar in calendar_list" class="calendarevents_calendars_entry">
+            <a class="calendarevents_calendars_name" href="${h.plug_url('calendarevents', '/calendar/%s') % calendar.uid}">${calendar.name}</a>
+        </div>
     </div>
 </body>
 </html>

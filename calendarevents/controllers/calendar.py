@@ -1,89 +1,49 @@
+import json
 from tg import TGController
 from tg import expose, flash, require, url, lurl, request, redirect, validate, config
 from tg.i18n import ugettext as _, lazy_ugettext as l_
+from tgext.datahelpers.utils import fail_with
+from tgext.datahelpers.validators import SQLAEntityConverter
 
 from calendarevents import model
-from calendarevents.lib.forms import get_modevent_form
 from calendarevents.model import DBSession
 
 from tgext.pluggable import plug_redirect
-from tgext.datahelpers.validators import SQLAEntityConverter
-from tgext.datahelpers.utils import fail_with, object_primary_key
 
-from calendarevents.lib import get_form
-from calendarevents.model.models import CalendarEvent
 from repoze.what import predicates
-import json
+from calendarevents.lib.forms import new_calendar_form
 
 class CalendarController(TGController):
     @expose('calendarevents.templates.calendar.calendar')
     @validate(dict(cal=SQLAEntityConverter(model.Calendar)),
-            error_handler=fail_with(404))
+              error_handler=fail_with(404))
     def _default(self, cal):
         events = [{'uid':e.uid, 'title':e.name, 'start':e.datetime.strftime('%Y-%m-%d %H:%M')} for e in cal.events]
         return dict(cal=cal, events=json.dumps(events))
 
-    @expose('calendarevents.templates.calendar.list')
+    @expose('calendarevents.templates.calendar.events')
     @validate(dict(cal=SQLAEntityConverter(model.Calendar)),
               error_handler=fail_with(404))
-    def list(self, cal):
+    def events(self, cal):
         return dict(cal=cal)
 
     @require(predicates.in_group('calendarevents'))
-    @expose('calendarevents.templates.calendar.newevent')
-    @validate(dict(cal=SQLAEntityConverter(model.Calendar)),
-              error_handler=fail_with(403))
-    def newevent(self, cal, **kw):
-        if isinstance(cal, basestring):
-            cal = SQLAEntityConverter(model.Calendar).to_python(cal)
+    @expose('calendarevents.templates.calendar.list')
+    def list(self):
+        calendar_list = DBSession.query(model.Calendar).all()
+        return dict(calendar_list=calendar_list)
 
-        event_type = cal.events_type_info
-        if not event_type:
-            linkable_entities = []
-        else:
-            linkable_entities = event_type.get_linkable_entities(cal)
-
-        return dict(cal=cal, form=get_form(), linkable_entities=linkable_entities)
+    @require(predicates.in_group('calendarevents'))
+    @expose('calendarevents.templates.calendar.new')
+    def new(self, **kw):
+        return dict(form=new_calendar_form)
 
     @require(predicates.in_group('calendarevents'))
     @expose()
-    @validate(get_form(), error_handler=newevent)
-    def addevent(self, cal, **kw):
-        new_event = model.CalendarEvent(calendar_id=cal.uid, name=kw['name'],
-                                        summary=kw['summary'], datetime=kw['datetime'],
-                                        location=kw['location'],
-                                        linked_entity_type=cal.events_type,
-                                        linked_entity_id=kw.get('linked_entity'))
-        model.DBSession.add(new_event)
-        flash(_('Event successfully added'))
-        return plug_redirect('calendarevents', '/calendar/%s' % cal.uid)
-
-    @require(predicates.in_group('calendarevents'))
-    @expose()
-    @validate(dict(event=SQLAEntityConverter(model.CalendarEvent)),
-              error_handler=fail_with(404))
-    def remove_event(self, event):
-        calendar_id = event.calendar_id
-        DBSession.delete(event)
-        return plug_redirect('calendarevents', '/calendar/%s' % calendar_id)
-
-    @require(predicates.in_group('calendarevents'))
-    @expose('calendarevents.templates.calendar.modevent')
-    @validate(dict(event=SQLAEntityConverter(model.CalendarEvent)),
-        error_handler=fail_with(404))
-    def modevent(self, event, **kw):
-        return dict(event=event, form=get_modevent_form())
-
-
-    @require(predicates.in_group('calendarevents'))
-    @expose()
-    @validate(dict(event=SQLAEntityConverter(model.CalendarEvent)),
-        error_handler=fail_with(404))
-    def modify_event(self, event):
-        event.name=kw['name']
-        event.summary=kw['summary'], datetime=kw['datetime']
-        event.location=kw['location']
-        event.linked_entity_id=kw.get('linked_entity')
-        DBSession.update(event)
-        flash(_('Event successfully modified'))
-        return plug_redirect('calendarevents', '/calendar/%s' % cal.uid)
+    @validate(new_calendar_form, error_handler=new)
+    def save(self, name, events_type):
+        new_calendar = model.Calendar(name=name, events_type=events_type)
+        model.DBSession.add(new_calendar)
+        model.DBSession.flush()
+        flash(_('Calendar successfully added'))
+        return plug_redirect('calendarevents', '/calendar/%s' % new_calendar.uid)

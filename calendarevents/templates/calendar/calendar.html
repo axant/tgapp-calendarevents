@@ -17,7 +17,7 @@
 <body>
     <h2 id="calendarevents_calendar_title">${cal.name}</h2>
     <div py:if="request.identity and 'calendarevents' in request.identity['groups']" id="calendarevents_add_event">
-        <a href="${h.plug_url('calendarevents', '/calendar/newevent/')}${cal.uid}">Add event</a>
+        <a href="${h.plug_url('calendarevents', '/event/new/')}${cal.uid}">Add event</a>
     </div>
     <div id="calendarevents_calendar">
 
