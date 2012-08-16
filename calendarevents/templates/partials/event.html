@@ -11,12 +11,12 @@
     </div>
     <div class="calendarevents_event_info">
         <a py:if="request.identity and 'calendarevents' in request.identity['groups']"
-           class="calendarevents_remove_event" href="${h.plug_url('calendarevents', '/calendar/remove_event/%s' % calendar_event.uid)}"
-           onclick="return confirm('Do you really want to remove the event?')">
+           class="calendarevents_remove_event" href="${h.plug_url('calendarevents', '/event/remove/%s' % calendar_event.uid)}"
+           onclick="confirm('Do you really want to remove the event?')">
             <img src="${tg.url('/_pluggable/calendarevents/images/trash.gif')}" />
         </a>
         <a py:if="request.identity and 'calendarevents' in request.identity['groups']"
-           class="calendarevents_modify_event" href="${h.plug_url('calendarevents', '/calendar/modevent/%s' % calendar_event.uid)}">
+           class="calendarevents_modify_event" href="${h.plug_url('calendarevents', '/event/edit/%s' % calendar_event.uid)}">
             <img src="${tg.url('/_pluggable/calendarevents/images/mod.gif')}" />
         </a>
         <div class="calendarevents_event_name">

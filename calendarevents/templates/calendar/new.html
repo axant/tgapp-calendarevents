@@ -8,15 +8,15 @@
 
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" py:if="False"/>
-    <title>Modify event</title>
+    <title>Create new calendar</title>
     <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/_pluggable/calendarevents/css/style.css')}" />
 </head>
 
 <body>
-<h2 class="calendarevents_head">Modify event's details</h2>
-<div class="calendarevents_form">
-    ${form(value=dict(event=event.uid, cal=cal, name=event.name, summary=event.summary, location=event.location, linked_entity=event.linked_entity_id), child_args=dict(linked_entity={'options':linkable_entities}), action=h.plug_url('calendarevents', '/calendar/modify_event'))}
-</div>
-<a class="calendarevents_cancel" href="${h.plug_url('calendarevents', '/calendar/%s') % cal.uid}">Cancel and return to Calendar</a>
+    <h2 class="calendarevents_head">Insert new calendar's details</h2>
+    <div class="calendarevents_form">
+        ${form(action=h.plug_url('calendarevents', '/calendar/save'))}
+    </div>
+    <a class="calendarevents_cancel" href="${h.plug_url('calendarevents', '/calendar/list')}">Cancel and return to Calendar list</a>
 </body>
 </html>
