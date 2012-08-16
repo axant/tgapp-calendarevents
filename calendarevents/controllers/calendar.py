@@ -3,7 +3,7 @@ from tg import TGController
 from tg import expose, flash, require, url, lurl, request, redirect, validate, config
 from tg.i18n import ugettext as _, lazy_ugettext as l_
 from tgext.datahelpers.utils import fail_with
-from tgext.datahelpers.validators import SQLAEntityConverter
+from tgext.datahelpers.validators import SQLAEntityConverter, validated_handler
 
 from calendarevents import model
 from calendarevents.model import DBSession
@@ -27,19 +27,19 @@ class CalendarController(TGController):
     def events(self, cal):
         return dict(cal=cal)
 
-    @require(predicates.in_group('calendarevents'))
     @expose('calendarevents.templates.calendar.list')
+    @require(predicates.in_group('calendarevents'))
     def list(self):
         calendar_list = DBSession.query(model.Calendar).all()
         return dict(calendar_list=calendar_list)
 
-    @require(predicates.in_group('calendarevents'))
     @expose('calendarevents.templates.calendar.new')
+    @require(predicates.in_group('calendarevents'))
     def new(self, **kw):
         return dict(form=new_calendar_form)
 
-    @require(predicates.in_group('calendarevents'))
     @expose()
+    @require(predicates.in_group('calendarevents'))
     @validate(new_calendar_form, error_handler=new)
     def save(self, name, events_type):
         new_calendar = model.Calendar(name=name, events_type=events_type)

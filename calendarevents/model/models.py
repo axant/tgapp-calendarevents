@@ -20,6 +20,13 @@ class Calendar(DeclarativeBase):
     def events_type_info(self):
         return lookup_event_type(self.events_type)
 
+    @property
+    def linkable_entities(self):
+        event_type = self.events_type_info
+        if not event_type:
+            return []
+        return event_type.get_linkable_entities(self)
+
 class CalendarEvent(DeclarativeBase):
     __tablename__ = 'calendarevents_event'
 
