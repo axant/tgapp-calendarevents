@@ -23,4 +23,4 @@ class RootController(TGController):
     @require(predicates.in_group('calendarevents'))
     @expose('calendarevents.templates.index')
     def index(self):
-        return plug_redirect('calendarevents', '/calendarlist')
+        return plug_redirect('calendarevents', '/calendar/list')
