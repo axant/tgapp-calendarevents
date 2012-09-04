@@ -90,7 +90,6 @@ def get_weather_for_date(location, date):
             elif today_to_event < 5:
                 weather = get_weather_from_yahoo(location, 'metric')
                 weather = weather['forecasts'][today_to_event]
-                print weather
         if not weather:
             weather = {'icon':tg.url('/_pluggable/calendarevents/images/noweather.png'),
                        'temp':'', 'low':'', 'high':''}
@@ -100,6 +99,5 @@ def get_weather_for_date(location, date):
     try:
         return get_cached_weater(CacheKey('%s-%s' % (location, date)), location, date)
     except:
-        raise
         return {'icon':tg.url('/_pluggable/calendarevents/images/noweather.png'),
-                'temp_c':'', 'low':'', 'high':''}
+                'temp':'', 'low':'', 'high':''}
