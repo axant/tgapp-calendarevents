@@ -29,7 +29,7 @@
     </div>
     <div class="calendarevents_event_summary">${calendar_event.summary}</div>
     <div class="calendarevents_event_linked_entity_info">
-        <a py:if="calendar_event.linked_entity_url" href="${calendar_event.linked_entity_url}">
+        <a py:strip="not calendar_event.linked_entity_url" href="${calendar_event.linked_entity_url}">
             ${calendar_event.linked_entity_info}
         </a>
     </div>
