@@ -10,7 +10,11 @@ from calendarevents.model import DBSession
 
 from tgext.pluggable import plug_redirect
 
-from repoze.what import predicates
+try:
+    from tg import predicates
+except ImportError:
+    from repoze.what import predicates
+
 from calendarevents.lib.forms import new_calendar_form
 
 class CalendarController(TGController):

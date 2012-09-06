@@ -10,7 +10,11 @@ from tgext.datahelpers.validators import SQLAEntityConverter, validated_handler
 from tgext.datahelpers.utils import fail_with, object_primary_key
 
 from calendarevents.lib import get_form
-from repoze.what import predicates
+
+try:
+    from tg import predicates
+except ImportError:
+    from repoze.what import predicates
 
 class EventController(TGController):
     @expose('calendarevents.templates.event.event')

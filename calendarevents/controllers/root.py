@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 """Main Controller"""
-from repoze.what import predicates
+try:
+    from tg import predicates
+except ImportError:
+    from repoze.what import predicates
 
 from tg import TGController
 from tg import expose, flash, require, url, lurl, request, redirect, validate
