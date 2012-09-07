@@ -14,7 +14,7 @@ class Calendar(DeclarativeBase):
 
     uid = Column(Integer, autoincrement=True, primary_key=True)
     name = Column(Unicode(64))
-    events_type = Column(Unicode(64))
+    events_type = Column(Unicode(64), index=True)
 
     @property
     def events_type_info(self):
@@ -33,10 +33,10 @@ class CalendarEvent(DeclarativeBase):
     uid = Column(Integer, autoincrement=True, primary_key=True)
     name = Column(Unicode(255), nullable=False)
     summary = Column(Unicode(1024))
-    datetime = Column(DateTime, nullable=False)
+    datetime = Column(DateTime, nullable=False, index=True)
     location = Column(Unicode(255), nullable=False)
 
-    calendar_id = Column(Integer, ForeignKey(Calendar.uid), nullable=False)
+    calendar_id = Column(Integer, ForeignKey(Calendar.uid), nullable=False, index=True)
     calendar = relation(Calendar, backref=backref('events', order_by='CalendarEvent.datetime.desc()',
                                                             cascade='all, delete-orphan'))
 
