@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-import sys
 from tg import config
 import forms
 
 def get_form():
-    registration_form = config.get('_calendarevents.form_instance')
-    if not registration_form:
+    calendar_form = config.get('_calendarevents.form_instance')
+    if not calendar_form:
         form_path = config.get('_calendarevents.form', 'calendarevents.lib.forms.NewEventForm')
-        root_module, path = form_path.split('.', 1)
-        form_class = reduce(getattr, path.split('.'), sys.modules[root_module])
-        registration_form = config['_calendarevents.form_instance'] = form_class()
-    return registration_form
+        module, form_name = form_path.rsplit('.', 1)
+        module = __import__(module, fromlist=form_name)
+        form_class = getattr(module, form_name)
+        calendar_form = config['_calendarevents.form_instance'] = form_class()
+    return calendar_form

@@ -15,7 +15,7 @@
 <body>
     <h2 class="calendarevents_head">Insert new calendar's details</h2>
     <div class="calendarevents_form">
-        ${form(action=h.plug_url('calendarevents', '/calendar/save'))}
+        ${form.display(action=h.plug_url('calendarevents', '/calendar/save'))}
     </div>
     <a class="calendarevents_cancel" href="${h.plug_url('calendarevents', '/calendar/list')}">Cancel and return to Calendar list</a>
 </body>
