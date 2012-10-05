@@ -5,7 +5,7 @@ from tg.i18n import ugettext as _, lazy_ugettext as l_
 from calendarevents import model
 from calendarevents.model import DBSession
 
-from tgext.pluggable import plug_redirect
+from tgext.pluggable import plug_redirect, plug_url
 from tgext.datahelpers.validators import SQLAEntityConverter, validated_handler
 from tgext.datahelpers.utils import fail_with, object_primary_key
 
@@ -48,8 +48,11 @@ class EventController(TGController):
     @validate(dict(event=SQLAEntityConverter(model.CalendarEvent)),
               error_handler=fail_with(404))
     def remove(self, event):
+        referer = request.referer
+        if referer and referer.endswith(plug_url('calendarevents', '/event/%s' % event.uid)):
+            referer = plug_url('calendarevents', '/calendar/%s' % event.calendar_id)
         DBSession.delete(event)
-        return redirect(request.referer)
+        return redirect(referer)
 
     @expose('calendarevents.templates.event.edit')
     @require(predicates.in_group('calendarevents'))
