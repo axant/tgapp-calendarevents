@@ -77,7 +77,7 @@ def get_weather_code_for_location(location):
         return j["query"]["results"]["place"][0]["woeid"]
 
 def get_weather_for_date(location, date):
-    @entitycached('cache_key', expire=24*3600)
+    @entitycached('cache_key', expire=2*3600)
     def get_cached_weater(cache_key, location, date):
         weather = {}
 
