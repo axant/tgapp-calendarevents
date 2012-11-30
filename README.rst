@@ -17,7 +17,7 @@ Installing
 
 calendarevents can be installed both from pypi or from bitbucket::
 
-    easy_install calendarevents
+    easy_install tgapp-calendarevents
 
 should just work for most of the users
 
