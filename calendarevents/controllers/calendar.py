@@ -16,14 +16,20 @@ except ImportError:
     from repoze.what import predicates
 
 from calendarevents.lib.forms import new_calendar_form
+from calendarevents.lib.validators import DateParameterValidator
 
 class CalendarController(TGController):
     @expose('calendarevents.templates.calendar.calendar')
-    @validate(dict(cal=SQLAEntityConverter(model.Calendar)),
+    @validate(dict(cal=SQLAEntityConverter(model.Calendar),
+                   start_from=DateParameterValidator()),
               error_handler=fail_with(404))
-    def _default(self, cal):
+    def _default(self, cal, view='month', start_from=None, **kw):
         events = [{'uid':e.uid, 'title':e.name, 'start':e.datetime.strftime('%Y-%m-%d %H:%M')} for e in cal.events]
-        return dict(cal=cal, events=json.dumps(events))
+        
+        if view not in ('month', 'basicWeek', 'basicDay', 'agendaWeek', 'agendaDay'):
+            view = 'month'
+        
+        return dict(cal=cal, events=json.dumps(events), view=view, start_from=start_from)
 
     @expose('calendarevents.templates.calendar.events')
     @validate(dict(cal=SQLAEntityConverter(model.Calendar)),

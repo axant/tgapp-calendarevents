@@ -9,7 +9,7 @@ except ImportError:
     from setuptools import setup, find_packages
 
 install_requires=[
-    "TurboGears2 >= 2.1.4",
+    "TurboGears2 >= 2.2.0",
     "tgext.pluggable >= 0.0.7",
     "tgext.datahelpers >= 0.0.8"
 ]
@@ -22,14 +22,14 @@ except IOError:
 
 setup(
     name='tgapp-calendarevents',
-    version='0.0.8',
+    version='0.1.0',
     description='TurboGears2 pluggable application for events and calendars',
     long_description=README,
     author='Alessandro Molina',
     author_email='alessandro.molina@axant.it',
     #url='',
     keywords='turbogears2.application',
-    setup_requires=["PasteScript >= 1.7"],
+    setup_requires=[],
     paster_plugins=[],
     packages=find_packages(exclude=['ez_setup']),
     install_requires=install_requires,
@@ -40,7 +40,6 @@ setup(
     entry_points="""
     """,
     dependency_links=[
-        "http://www.turbogears.org/2.1/downloads/current/"
         ],
     zip_safe=False
 )

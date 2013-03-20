@@ -25,6 +25,11 @@
     <script>
         jQuery(document).ready(function() {
             jQuery('#calendarevents_calendar').fullCalendar({
+                year: ${start_from.year},
+                month: ${start_from.month-1},
+                date: ${start_from.day},
+                axisFormat: "HH:mm",
+                defaultView: "${view}",
                 events: ${events},
                 eventClick: function( event, jsEvent, view ) {
                     window.location.href = "${h.plug_url('calendarevents', '/event/')}"+event.uid;
