@@ -61,6 +61,15 @@ describes the concert itself::
 
     plug(base_config, 'calendarevents', event_types=[Concert()])
 
+Event types can also specify some additional options to change the calendevents 
+behavior. If the ``EventType`` specifies ``force_redirect = True`` as a class
+property whenever the event page is opened the user gets redirected to the
+linked entity url.
+``EventType`` can also update the calendar informations be exposing a
+``calendar_data(self, event) -> dict`` method that can return any
+additional information for the event (for example it can mark the
+event as allDay or not).
+
 Exposed Partials
 ----------------------
 

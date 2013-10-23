@@ -44,6 +44,16 @@ class CalendarEvent(DeclarativeBase):
     linked_entity_type = Column(Unicode(255), nullable=False, index=True)
 
     @property
+    def calendar_data(self):
+        data = {'uid':self.uid, 'title':self.name, 'start':self.datetime.strftime('%Y-%m-%d %H:%M')}
+
+        event_type = self.event_type
+        if event_type is not None and hasattr(event_type, 'calendar_data'):
+            data.update(event_type.calendar_data(self))
+
+        return data
+
+    @property
     def event_type(self):
         return lookup_event_type(self.linked_entity_type)
 

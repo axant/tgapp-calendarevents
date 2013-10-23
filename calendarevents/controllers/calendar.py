@@ -24,7 +24,7 @@ class CalendarController(TGController):
                    start_from=DateParameterValidator()),
               error_handler=fail_with(404))
     def _default(self, cal, view='month', start_from=None, **kw):
-        events = [{'uid':e.uid, 'title':e.name, 'start':e.datetime.strftime('%Y-%m-%d %H:%M')} for e in cal.events]
+        events = [e.calendar_data for e in cal.events]
         
         if view not in ('month', 'basicWeek', 'basicDay', 'agendaWeek', 'agendaDay'):
             view = 'month'

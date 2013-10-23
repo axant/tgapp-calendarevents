@@ -21,6 +21,10 @@ class EventController(TGController):
     @validate(dict(event=SQLAEntityConverter(model.CalendarEvent)),
               error_handler=fail_with(404))
     def _default(self, event):
+        if event.event_type and getattr(event.event_type, 'force_redirect', False):
+            linked_entity_url = event.linked_entity_url
+            if linked_entity_url:
+                return redirect(linked_entity_url)
         return dict(event=event)
 
     @expose('calendarevents.templates.event.new')
