@@ -4,12 +4,13 @@ from tg.i18n import ugettext as _, lazy_ugettext as l_
 
 from calendarevents import model
 from calendarevents.model import DBSession
+from calendarevents.lib import get_form
+from calendarevents.lib import utils
 
 from tgext.pluggable import plug_redirect, plug_url
 from tgext.datahelpers.validators import SQLAEntityConverter, validated_handler
 from tgext.datahelpers.utils import fail_with, object_primary_key
 
-from calendarevents.lib import get_form
 
 try:
     from tg import predicates
@@ -38,12 +39,12 @@ class EventController(TGController):
     @require(predicates.in_group('calendarevents'))
     @validate(get_form(), error_handler=validated_handler(new))
     def create(self, cal, **kw):
-        new_event = model.CalendarEvent(calendar_id=cal.uid, name=kw['name'],
-                                        summary=kw['summary'], datetime=kw['datetime'],
-                                        location=kw['location'],
-                                        linked_entity_type=cal.events_type,
-                                        linked_entity_id=kw.get('linked_entity'))
-        model.DBSession.add(new_event)
+        new_event = utils.create_event(cal, name=kw['name'],
+                                       summary=kw['summary'], datetime=kw['datetime'],
+                                       location=kw['location'],
+                                       linked_entity_type=cal.events_type,
+                                       linked_entity_id=kw.get('linked_entity'))
+
         flash(_('Event successfully added'))
         return plug_redirect('calendarevents', '/calendar/%s' % cal.uid)
 

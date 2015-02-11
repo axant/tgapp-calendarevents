@@ -6,6 +6,7 @@ from tgext.datahelpers.utils import fail_with
 from tgext.datahelpers.validators import SQLAEntityConverter, validated_handler
 
 from calendarevents import model
+from calendarevents.lib.utils import create_calendar
 from calendarevents.model import DBSession
 
 from tgext.pluggable import plug_redirect
@@ -53,8 +54,7 @@ class CalendarController(TGController):
     @validate(new_calendar_form,
               error_handler=validated_handler(new))
     def save(self, name, events_type):
-        new_calendar = model.Calendar(name=name, events_type=events_type)
-        model.DBSession.add(new_calendar)
+        new_calendar = create_calendar(name=name, events_type=events_type)
         model.DBSession.flush()
         flash(_('Calendar successfully added'))
         return plug_redirect('calendarevents', '/calendar/%s' % new_calendar.uid)

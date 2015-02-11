@@ -34,6 +34,7 @@ class CalendarEvent(DeclarativeBase):
     name = Column(Unicode(255), nullable=False)
     summary = Column(Unicode(1024))
     datetime = Column(DateTime, nullable=False, index=True)
+    end_time = Column(DateTime, index=True)
     location = Column(Unicode(255), nullable=False)
 
     calendar_id = Column(Integer, ForeignKey(Calendar.uid), nullable=False, index=True)
@@ -45,7 +46,7 @@ class CalendarEvent(DeclarativeBase):
 
     @property
     def calendar_data(self):
-        data = {'uid':self.uid, 'title':self.name, 'start':self.datetime.strftime('%Y-%m-%d %H:%M')}
+        data = {'uid': self.uid, 'title': self.name, 'start': self.datetime.strftime('%Y-%m-%d %H:%M')}
 
         event_type = self.event_type
         if event_type is not None and hasattr(event_type, 'calendar_data'):
