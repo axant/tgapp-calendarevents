@@ -71,8 +71,17 @@ additional information for the event (for example it can mark the
 event as allDay or not).
 
 Exposed Partials
-----------------------
+----------------
 
 calendarevents exposes a partial to render event boxes inside other pages:
 
-- calendarevents.partials:event(event) - Renders an event box
+* calendarevents.partials:event(event) - Renders an event box
+* calendarevents.partials:calendar(cal, view='month', all_day_slot=False, start_from=datetime.utcnow()) - renders a
+calendar, cal must be calendar_id
+
+Utils
+-----
+
+inside ``calendarvents.lib.utils`` you can find a bunch of utils to create, manage, view events and calendar:
+
+* create_calendar(name, events_type) - create a new calendar, events_type should be a string
