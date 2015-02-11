@@ -3,6 +3,7 @@
 
 import tg
 from calendarevents.lib.event_type import EventType
+import partials
 
 def plugme(app_config, options):
     tg.config['_calendarevents'] = options
