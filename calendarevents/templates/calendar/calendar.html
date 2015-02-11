@@ -10,8 +10,9 @@
     <title>Calendar view</title>
     <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/_pluggable/calendarevents/css/style.css')}" />
     <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/_pluggable/calendarevents/css/fullcalendar.css')}" />
-    <script src="${tg.url('/_pluggable/calendarevents/js/jquery-1.7.1.min.js')}"></script>
-    <script src="${tg.url('/_pluggable/calendarevents/js/fullcalendar.min.js')}"/>
+    <script src="${tg.url('/_pluggable/calendarevents/js/jquery-1.7.1.min.js')}" />
+    <script src="${tg.url('/_pluggable/calendarevents/js/fullcalendar.min.js')}" />
+    <script>var CalJQ = $.noConflict();</script>
 </head>
 
 <body>
@@ -23,8 +24,8 @@
 
     </div>
     <script>
-        jQuery(document).ready(function() {
-            jQuery('#calendarevents_calendar').fullCalendar({
+        CalJQ(document).ready(function() {
+            CalJQ('#calendarevents_calendar').fullCalendar({
                 year: ${start_from.year},
                 month: ${start_from.month-1},
                 date: ${start_from.day},
