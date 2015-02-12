@@ -20,6 +20,8 @@
                 events: ${events},
                 eventClick: function( event, jsEvent, view ) {
                     window.location.href = "${h.plug_url('calendarevents', '/event/')}"+event.uid;
+                },
+                dayClick: function(date, allDay, jsEvent, view) {
                 }
             });
         });
