@@ -18,4 +18,4 @@ def create_event(cal, name, summary, datetime, location, linked_entity_type, lin
     return new_event
 
 def get_event(event_id):
-    return model.CalendarEvent.query.get(event_id)
+    return model.DBSession.query(model.CalendarEvent).get(event_id)
