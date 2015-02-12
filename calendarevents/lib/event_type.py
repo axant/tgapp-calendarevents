@@ -1,7 +1,16 @@
 import tg
+from tw2.core.js import js_function
+from tw2.core.resources import JSLink, CSSLink
+
 
 class EventType(object):
     name = 'Unknown'
+    resources = [
+        JSLink(modname='calendarevents.public', filename='js/calendarevents.js'),
+        CSSLink(modname='calendarevents.public', filename='css/fullcalendar.css')
+    ]
+    events = {'eventClick': js_function('calendarevents.eventClick'),
+              'dayClick': js_function('calendarevents.dayClick')}
 
     def get_linkable_entities(self, calendar):
         raise NotImplementedError

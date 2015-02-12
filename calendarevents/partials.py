@@ -19,4 +19,7 @@ def calendar(cal, view='month', all_day_slot=False, start_from=datetime.utcnow()
     if view not in ('month', 'basicWeek', 'basicDay', 'agendaWeek', 'agendaDay'):
         view = 'month'
 
-    return dict(events=json.dumps(events), view=view, all_day_slot=all_day_slot, start_from=start_from)
+    for res in cal.events_type_info.resources:
+        res.inject()
+
+    return dict(cal=cal, events=json.dumps(events), view=view, all_day_slot=all_day_slot, start_from=start_from)

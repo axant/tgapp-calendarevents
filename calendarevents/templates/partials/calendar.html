@@ -2,7 +2,6 @@
 <div xmlns:py="http://genshi.edgewall.org/" id="calendarevents_calendar_container">
     <script src="${tg.url('/_pluggable/calendarevents/js/jquery-1.7.1.min.js')}" />
     <script src="${tg.url('/_pluggable/calendarevents/js/fullcalendar.min.js')}" />
-    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/_pluggable/calendarevents/css/fullcalendar.css')}" />
     <script>var CalJQ = $.noConflict();</script>
     <div id="calendarevents_calendar">
 
@@ -19,7 +18,7 @@
                 defaultView: "${view}",
                 events: ${events},
                 eventClick: function( event, jsEvent, view ) {
-                    window.location.href = "${h.plug_url('calendarevents', '/event/')}"+event.uid;
+                     ${cal.events_type_info.events['eventClick']}("${h.plug_url('calendarevents', '/event/')}", event);
                 },
                 dayClick: function(date, allDay, jsEvent, view) {
                 }
