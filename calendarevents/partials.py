@@ -14,7 +14,7 @@ def event(event):
 @validate(dict(cal=SQLAEntityConverter(model.Calendar)),
           error_handler=fail_with(404))
 @expose('calendarevents.templates.partials.calendar')
-def calendar(cal, view='month', all_day_slot=False, start_from=datetime.utcnow()):
+def calendar(cal, start_from=datetime.utcnow(), view='month', all_day_slot=False, slot_minutes=15, first_hour=8):
     events = [e.calendar_data for e in cal.events]
     if view not in ('month', 'basicWeek', 'basicDay', 'agendaWeek', 'agendaDay'):
         view = 'month'
@@ -22,4 +22,5 @@ def calendar(cal, view='month', all_day_slot=False, start_from=datetime.utcnow()
     for res in cal.events_type_info.resources:
         res.inject()
 
-    return dict(cal=cal, events=json.dumps(events), view=view, all_day_slot=all_day_slot, start_from=start_from)
+    return dict(cal=cal, events=json.dumps(events), start_from=start_from, view=view, all_day_slot=all_day_slot,
+                slot_minutes=slot_minutes, first_hour=first_hour)

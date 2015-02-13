@@ -1,5 +1,5 @@
+import datetime
 from calendarevents import model
-
 
 def create_calendar(name, events_type):
     new_calendar = model.Calendar(name=name, events_type=events_type)
@@ -16,6 +16,7 @@ def create_event(cal, name, summary, datetime, location, linked_entity_type, lin
                                     linked_entity_id=linked_entity_id)
     model.DBSession.add(new_event)
     return new_event
+
 
 def get_event(event_id):
     return model.DBSession.query(model.CalendarEvent).get(event_id)
