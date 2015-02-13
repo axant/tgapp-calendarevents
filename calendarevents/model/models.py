@@ -1,3 +1,4 @@
+import datetime
 from sqlalchemy import Table, ForeignKey, Column
 from sqlalchemy.types import Unicode, Integer, DateTime
 from sqlalchemy.orm import backref, relation
@@ -44,9 +45,21 @@ class CalendarEvent(DeclarativeBase):
     linked_entity_id = Column(Integer, nullable=False, index=True)
     linked_entity_type = Column(Unicode(255), nullable=False, index=True)
 
+    @classmethod
+    def unix_time(cls, dt):
+        epoch = datetime.datetime.fromtimestamp(0)
+        delta = dt - epoch
+        return str(delta.total_seconds())[:-2]
+
+
     @property
     def calendar_data(self):
-        data = {'uid': self.uid, 'title': self.name, 'start': self.datetime.strftime('%Y-%m-%d %H:%M')}
+        data = {'uid': self.uid, 'title': self.name or '_', 'start': self.unix_time(self.datetime),
+                'linked_entity_info': self.linked_entity_info}
+
+        if self.end_time:
+            data['end'] = self.unix_time(self.end_time)
+            data['allDay'] = False
 
         event_type = self.event_type
         if event_type is not None and hasattr(event_type, 'calendar_data'):
