@@ -54,7 +54,7 @@ class CalendarEvent(DeclarativeBase):
 
     @property
     def calendar_data(self):
-        data = {'uid': self.uid, 'title': self.name or '_', 'start': self.unix_time(self.datetime),
+        data = {'uid': self.uid, 'title': self.name, 'start': self.unix_time(self.datetime),
                 'linked_entity_info': self.linked_entity_info}
 
         if self.end_time:
