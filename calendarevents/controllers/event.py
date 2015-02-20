@@ -17,6 +17,7 @@ try:
 except ImportError:
     from repoze.what import predicates
 
+
 class EventController(TGController):
     @expose('calendarevents.templates.event.event')
     @validate(dict(event=SQLAEntityConverter(model.CalendarEvent)),
