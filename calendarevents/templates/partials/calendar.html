@@ -18,7 +18,7 @@
                 axisFormat: "HH:mm",
                 timeFormat: 'HH:mm',
                 defaultView: "${view}",
-                events: ${events},
+                events: ${events}['values'],
                 eventClick: function( event, jsEvent, view ) {
                     ${cal.events_type_info.events['eventClick']}("${h.plug_url('calendarevents', '/event/')}", event, view);
                 },

@@ -10,6 +10,7 @@ from calendarevents.lib.weather import get_weather_for_date
 from tg.decorators import cached_property
 import re, cgi, fileinput
 
+
 class Calendar(DeclarativeBase):
     __tablename__ = 'calendarevents_calendar'
 
@@ -28,6 +29,7 @@ class Calendar(DeclarativeBase):
             return []
         return event_type.get_linkable_entities(self)
 
+
 class CalendarEvent(DeclarativeBase):
     __tablename__ = 'calendarevents_event'
 
@@ -40,25 +42,18 @@ class CalendarEvent(DeclarativeBase):
 
     calendar_id = Column(Integer, ForeignKey(Calendar.uid), nullable=False, index=True)
     calendar = relation(Calendar, backref=backref('events', order_by='CalendarEvent.datetime.desc()',
-                                                            cascade='all, delete-orphan'))
+                                                  cascade='all, delete-orphan'))
 
     linked_entity_id = Column(Integer, nullable=False, index=True)
     linked_entity_type = Column(Unicode(255), nullable=False, index=True)
 
-    @classmethod
-    def unix_time(cls, dt):
-        epoch = datetime.datetime.fromtimestamp(0)
-        delta = dt - epoch
-        return str(delta.total_seconds())[:-2]
-
-
     @property
     def calendar_data(self):
-        data = {'uid': self.uid, 'title': self.name, 'start': self.unix_time(self.datetime),
+        data = {'uid': self.uid, 'title': self.name, 'start': self.datetime,
                 'linked_entity_info': self.linked_entity_info}
 
         if self.end_time:
-            data['end'] = self.unix_time(self.end_time)
+            data['end'] = self.end_time
             data['allDay'] = False
 
         event_type = self.event_type
