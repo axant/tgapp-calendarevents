@@ -1,4 +1,3 @@
-import datetime
 from sqlalchemy import Table, ForeignKey, Column
 from sqlalchemy.types import Unicode, Integer, DateTime
 from sqlalchemy.orm import backref, relation
@@ -8,7 +7,6 @@ from calendarevents.lib.event_type import lookup_event_type
 from calendarevents.lib.weather import get_weather_for_date
 
 from tg.decorators import cached_property
-import re, cgi, fileinput
 
 
 class Calendar(DeclarativeBase):
@@ -28,6 +26,10 @@ class Calendar(DeclarativeBase):
         if not event_type:
             return []
         return event_type.get_linkable_entities(self)
+
+    def events_in_range(self, start_date, end_date):
+        from calendarevents.lib.utils import get_calendar_events_in_range
+        return get_calendar_events_in_range(self.uid, start_date, end_date)
 
 
 class CalendarEvent(DeclarativeBase):
