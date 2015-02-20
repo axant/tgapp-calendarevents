@@ -19,6 +19,7 @@ except ImportError:
 from calendarevents.lib.forms import new_calendar_form
 from calendarevents.lib.validators import DateParameterValidator
 
+
 class CalendarController(TGController):
     @expose('calendarevents.templates.calendar.calendar')
     @validate(dict(cal=SQLAEntityConverter(model.Calendar),
