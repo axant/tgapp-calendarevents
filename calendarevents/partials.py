@@ -15,13 +15,17 @@ def event(event):
 @validate(dict(cal=SQLAEntityConverter(model.Calendar)),
           error_handler=fail_with(404))
 @expose('calendarevents.templates.partials.calendar')
-def calendar(cal, start_from=datetime.utcnow(), view='month', all_day_slot=False, slot_minutes=15, first_hour=8):
-    events = {'values': [e.calendar_data for e in cal.events]}
+def calendar(cal, start_from=datetime.utcnow(), view='month', all_day_slot=False, slot_minutes=15, first_hour=8,
+             event_sources=None):
+    if event_sources is None:
+        event_sources = {'event_sources': [{'events': [e.calendar_data for e in cal.events]}]}
+
     if view not in ('month', 'basicWeek', 'basicDay', 'agendaWeek', 'agendaDay'):
         view = 'month'
 
     for res in cal.events_type_info.resources:
         res.inject()
 
-    return dict(cal=cal, events=tg.json_encode(events), start_from=start_from, view=view,
+    return dict(cal=cal, values=tg.json_encode(event_sources), start_from=start_from, view=view,
                 all_day_slot=all_day_slot,  slot_minutes=slot_minutes, first_hour=first_hour)
+
