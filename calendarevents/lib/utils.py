@@ -1,4 +1,5 @@
 from datetime import datetime
+from sqlalchemy import or_
 from calendarevents import model
 
 
@@ -47,10 +48,9 @@ def get_calendar_events_in_range(calendar, start_time, end_time=None):
 
     q = model.DBSession.query(model.CalendarEvent).filter(
         model.CalendarEvent.calendar_id == calendar,
-        model.CalendarEvent.datetime >= start_time
+        or_(model.CalendarEvent.datetime >= start_time, model.CalendarEvent.end_time > start_time)
     )
 
     if end_time is not None:
         q = q.filter(model.CalendarEvent.datetime <= end_time)
-
     return q.order_by(model.CalendarEvent.datetime)
