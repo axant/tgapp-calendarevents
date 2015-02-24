@@ -15,8 +15,9 @@
                 allDaySlot: ${'true' if all_day_slot else 'false'},
                 slotMinutes: ${slot_minutes},
                 firstHour: ${first_hour},
-                axisFormat: "HH:mm",
-                timeFormat: 'HH:mm',
+                axisFormat: "${time_format}",
+                timeFormat: "${time_format}",
+                columnFormat: "${column_format}",
                 defaultView: "${view}",
                 eventSources: ${values}['event_sources'],
                 eventClick: function( event, jsEvent, view ) {
