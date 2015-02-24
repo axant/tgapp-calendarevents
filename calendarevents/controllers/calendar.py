@@ -26,12 +26,10 @@ class CalendarController(TGController):
                    start_from=DateParameterValidator()),
               error_handler=fail_with(404))
     def _default(self, cal, view='month', start_from=None, **kw):
-        events = [e.calendar_data for e in cal.events]
-        
         if view not in ('month', 'basicWeek', 'basicDay', 'agendaWeek', 'agendaDay'):
             view = 'month'
         
-        return dict(cal=cal, events=json.dumps(events), view=view, start_from=start_from)
+        return dict(cal=cal, view=view, start_from=start_from)
 
     @expose('calendarevents.templates.calendar.events')
     @validate(dict(cal=SQLAEntityConverter(model.Calendar)),

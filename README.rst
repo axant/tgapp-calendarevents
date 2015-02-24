@@ -1,5 +1,5 @@
 About calendarevents
--------------------------
+--------------------
 
 calendarevents is a Pluggable calendars and events application for TurboGears2.
 It permits to create events which are associated to entities defined inside the
@@ -13,7 +13,7 @@ When displaying events if available weather informations for the day and locatio
 of the event will be provided.
 
 Installing
--------------------------------
+----------
 
 calendarevents can be installed both from pypi or from bitbucket::
 
@@ -22,7 +22,7 @@ calendarevents can be installed both from pypi or from bitbucket::
 should just work for most of the users
 
 Plugging calendarevents
-----------------------------
+-----------------------
 
 In your application *config/app_cfg.py* import **plug**::
 
@@ -39,7 +39,7 @@ You will be able to access the calendars at
 *http://localhost:8080/calendarevents*.
 
 Event Types
-----------------------
+-----------
 
 calendarevents needs the application to define at least one EventType to work.
 
@@ -76,8 +76,34 @@ Exposed Partials
 calendarevents exposes a partial to render event boxes inside other pages:
 
 * calendarevents.partials:event(event) - Renders an event box
-* calendarevents.partials:calendar(cal, view='month', all_day_slot=False, start_from=datetime.utcnow()) - renders a
-calendar, cal must be calendar_id
+
+
+Calendar Partial
+----------------
+
+``calendarevents.partials:calendar(cal, view='month', all_day_slot=False, start_from=datetime.utcnow())``
+
+The calendar partial expose a partial with just a calendar, parameters accepted are:
+
+* ``cal`` -> (required) the calendar object, for now the js events are managed only by the ``event_type`` assigned to
+that calendar
+* ``event_sources`` -> a dictionary in the following format {'event_sources': [{'events': availability_events_list,
+                                                                                'color': 'Blue',
+                                                                                'text_color': ''},
+                                                                               {'events': occupation_events_list,
+                                                                                'color': 'Red',
+                                                                                'text_color': ''}]}
+``color`` and ``text_color`` are optional, ``events`` should be a list of ``event.calendar_data`` property, if you did
+not provide this, events are taken from ``cal`` object
+* ``start_from`` -> (datetime) starting calendar date
+* ``view`` -> (String)  (default value "month") type of the calendar view (``month``, ``basicWeek``, ``basicDay``,
+``agendaWeek``, ``agendaDay``)
+* ``all_day_slot`` -> (Bool) (default value: False) Event slot are displayed for all day or for the real time slot
+* ``slot_minutes`` -> (Int) (default value: 15) Minutes slot duration
+* ``first_hour`` -> (Int) (default value: 8) First hour displayed
+* ``time_format`` -> (String) (default value: "HH:mm"), the display format for time
+* ``column_format`` -> (String) (default value: "d/M"), the display format for column date
+
 
 Utils
 -----
