@@ -77,7 +77,6 @@ calendarevents exposes a partial to render event boxes inside other pages:
 
 * calendarevents.partials:event(event) - Renders an event box
 
-
 Calendar Partial
 ----------------
 
@@ -86,28 +85,39 @@ Calendar Partial
 The calendar partial expose a partial with just a calendar, parameters accepted are:
 
 * ``cal`` -> (required) the calendar object, for now the js events are managed only by the ``event_type`` assigned to
-that calendar
-* ``event_sources`` -> a dictionary in the following format {'event_sources': [{'events': availability_events_list,
-                                                                                'color': 'Blue',
-                                                                                'text_color': ''},
-                                                                               {'events': occupation_events_list,
-                                                                                'color': 'Red',
-                                                                                'text_color': ''}]}
-``color`` and ``text_color`` are optional, ``events`` should be a list of ``event.calendar_data`` property, if you did
-not provide this, events are taken from ``cal`` object
+    that calendar
+* ``event_sources`` -> a dictionary in the following format::
+
+    {'event_sources': [{'events': availability_events_list,
+                        'color': 'Blue',
+                        'text_color': ''},
+                       {'events': occupation_events_list,
+                        'color': 'Red',
+                        'text_color': ''}]}
+
+  ``color`` and ``text_color`` are optional, ``events`` should be a list of ``event.calendar_data`` property, if you did
+  not provide this, events are taken from ``cal`` object
 * ``start_from`` -> (datetime) starting calendar date
 * ``view`` -> (String)  (default value "month") type of the calendar view (``month``, ``basicWeek``, ``basicDay``,
-``agendaWeek``, ``agendaDay``)
+  ``agendaWeek``, ``agendaDay``)
 * ``all_day_slot`` -> (Bool) (default value: False) Event slot are displayed for all day or for the real time slot
 * ``slot_minutes`` -> (Int) (default value: 15) Minutes slot duration
 * ``first_hour`` -> (Int) (default value: 8) First hour displayed
 * ``time_format`` -> (String) (default value: "HH:mm"), the display format for time
 * ``column_format`` -> (String) (default value: "d/M"), the display format for column date
 
-
 Utils
 -----
 
 inside ``calendarvents.lib.utils`` you can find a bunch of utils to create, manage, view events and calendar:
 
-* create_calendar(name, events_type) - create a new calendar, events_type should be a string
+* **create_calendar(name, events_type)** - create a new calendar, events_type should be a string
+* **create_event(cal, name, summary, datetime, location, linked_entity_type, linked_entity_id, end_time)** - create a
+  new ``calendar_event``
+* **get_event(event_id)** - retrieve the ``calendar_event`` for the given ``event_id``
+* **get_calendar_events_from_datetime(calendar, start_time)** retrieve all ``calendar_event`` for the given calendar
+  starting from the given ``start_time``
+* **get_calendar_day_events(calendar, start_time)** retrieve all ``calendar_event`` for the given calendar and the given
+  ``start_time``
+* **get_calendar_events_in_range(calendar, start_time, end_time)** - retrieve all ``calendar_event`` for the given
+  calendar and the given range of time (``start_time`` - ``end_time``)
