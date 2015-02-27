@@ -9,6 +9,10 @@ def create_calendar(name, events_type):
     return new_calendar
 
 
+def get_calendar(calendar_id):
+    return model.DBSession.query(model.Calendar).get(calendar_id)
+
+
 def create_event(cal, name, summary, datetime, location, linked_entity_type, linked_entity_id, end_time=None):
     new_event = model.CalendarEvent(calendar_id=cal.uid, name=name,
                                     summary=summary, datetime=datetime,

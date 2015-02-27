@@ -112,6 +112,7 @@ Utils
 inside ``calendarvents.lib.utils`` you can find a bunch of utils to create, manage, view events and calendar:
 
 * **create_calendar(name, events_type)** - create a new calendar, events_type should be a string
+* **get_calendar(calendar_id)** - retrieve the ``calendar`` for the given ``calendar_id``
 * **create_event(cal, name, summary, datetime, location, linked_entity_type, linked_entity_id, end_time)** - create a
   new ``calendar_event``
 * **get_event(event_id)** - retrieve the ``calendar_event`` for the given ``event_id``
