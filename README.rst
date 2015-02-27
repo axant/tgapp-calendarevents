@@ -47,8 +47,17 @@ Event types must be defined inheriting from the ``calendarevents.EventType`` cla
 for example to define an event for a concert which relates to a blog article that
 describes the concert itself::
 
+    from tw2.core.js import js_function
+    from tw2.core.resources import JSLink, CSSLink
+
     class Concert(EventType):
         name = 'Concert'
+        resources = [
+            JSLink(modname='calendarevents.public', filename='js/calendarevents.js'),
+            CSSLink(modname='calendarevents.public', filename='css/fullcalendar.css')
+        ]
+        events = {'eventClick': js_function('calendarevents.eventClick'),
+                  'dayClick': js_function('calendarevents.dayClick')}
 
         def get_linkable_entities(self, calendar):
             return [(a.uid, a.title) for a in model.DBSession.query(model.Article)]
@@ -69,6 +78,8 @@ linked entity url.
 ``calendar_data(self, event) -> dict`` method that can return any
 additional information for the event (for example it can mark the
 event as allDay or not).
+
+Resources should be a list of toscaWidget injected resource, the 
 
 Exposed Partials
 ----------------
