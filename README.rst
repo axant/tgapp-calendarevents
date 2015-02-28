@@ -79,7 +79,30 @@ linked entity url.
 additional information for the event (for example it can mark the
 event as allDay or not).
 
-Resources should be a list of toscaWidget injected resource, the 
+``resources`` are required only if you want to use js_hooks for fullcalendar events.
+``resources`` should be a list of toscaWidget injected resources,
+
+``events`` are the injected js methods for overriding js_hooks.
+
+js_hooks
+--------
+
+If you want to use js_hooks you must inject resource in your event type, see prior section.
+for now supported events for the js_hooks are ``eventClick`` and ``dayClick``.
+
+The .js hook script can follow this example::
+
+    (function(w) {
+      w.calendarevents = {
+        eventClick: function(base_url, event, view) {
+          window.location.href = base_url+event.uid;
+        },
+        dayClick: function(base_url, date, allDay, view) {
+        }
+      };
+    })(window);
+
+note: if you inject js_hooks you replace the default behavior
 
 Exposed Partials
 ----------------
@@ -120,7 +143,7 @@ The calendar partial expose a partial with just a calendar, parameters accepted 
 Utils
 -----
 
-inside ``calendarvents.lib.utils`` you can find a bunch of utils to create, manage, view events and calendar:
+inside ``calendarvents.lib.utils`` you can find a bunch of utils to view and manage events and calendar:
 
 * **create_calendar(name, events_type)** - create a new calendar, events_type should be a string
 * **get_calendar(calendar_id)** - retrieve the ``calendar`` for the given ``calendar_id``

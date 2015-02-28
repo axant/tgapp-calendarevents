@@ -2,6 +2,7 @@
 from tg import config
 import forms
 
+
 def get_form():
     calendar_form = config.get('_calendarevents.form_instance')
     if not calendar_form:

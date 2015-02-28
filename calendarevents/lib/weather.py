@@ -10,10 +10,11 @@ import urllib2
 from xml.dom import minidom
 from urllib import quote
 
-YAHOO_WEATHER_URL    = 'http://xml.weather.yahoo.com/forecastrss?w=%s&u=%s'
-YAHOO_WEATHER_NS     = 'http://xml.weather.yahoo.com/ns/rss/1.0'
+YAHOO_WEATHER_URL = 'http://xml.weather.yahoo.com/forecastrss?w=%s&u=%s'
+YAHOO_WEATHER_NS = 'http://xml.weather.yahoo.com/ns/rss/1.0'
 
-def get_weather_from_yahoo(location_id, units = 'metric'):
+
+def get_weather_from_yahoo(location_id, units='metric'):
     location_id = quote(location_id)
     if units == 'metric':
         unit = 'c'
@@ -69,12 +70,13 @@ def get_weather_from_yahoo(location_id, units = 'metric'):
 
 def get_weather_code_for_location(location):
     url = 'http://query.yahooapis.com/v1/public/yql'
-    data = {'format':'json',
-            'q':'select * from geo.places where text="%s"' % location}
+    data = {'format': 'json',
+            'q': 'select * from geo.places where text="%s"' % location}
 
     with closing(urlopen(url, urlencode(data))) as fbanswer:
         j = json.loads(fbanswer.read())
         return j["query"]["results"]["place"][0]["woeid"]
+
 
 def get_weather_for_date(location, date):
     @entitycached('cache_key', expire=2*3600)
@@ -91,13 +93,13 @@ def get_weather_for_date(location, date):
                 weather = get_weather_from_yahoo(location, 'metric')
                 weather = weather['forecasts'][today_to_event]
         if not weather:
-            weather = {'icon':tg.url('/_pluggable/calendarevents/images/noweather.png'),
-                       'temp':'', 'low':'', 'high':''}
+            weather = {'icon': tg.url('/_pluggable/calendarevents/images/noweather.png'),
+                       'temp': '', 'low':'', 'high':''}
 
         return weather
 
     try:
         return get_cached_weater(CacheKey('%s-%s' % (location, date)), location, date)
     except:
-        return {'icon':tg.url('/_pluggable/calendarevents/images/noweather.png'),
-                'temp':'', 'low':'', 'high':''}
+        return {'icon': tg.url('/_pluggable/calendarevents/images/noweather.png'),
+                'temp': '', 'low': '', 'high': ''}

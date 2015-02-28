@@ -8,7 +8,7 @@ except ImportError:
     use_setuptools()
     from setuptools import setup, find_packages
 
-install_requires=[
+install_requires = [
     "TurboGears2 >= 2.2.0",
     "tgext.pluggable >= 0.0.7",
     "tgext.datahelpers >= 0.0.8"
@@ -35,11 +35,10 @@ setup(
     install_requires=install_requires,
     include_package_data=True,
     package_data={'tgapp.calendarevents': ['i18n/*/LC_MESSAGES/*.mo',
-                                 'templates/*/*',
-                                 'public/*/*']},
+                                           'templates/*/*',
+                                           'public/*/*']},
     entry_points="""
     """,
-    dependency_links=[
-        ],
+    dependency_links=[],
     zip_safe=False
 )
