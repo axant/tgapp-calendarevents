@@ -21,6 +21,7 @@ class EventType(object):
     def get_linked_entity_info(self, event):
         return NotImplementedError
 
+
 def lookup_event_type(name):
     event_types = tg.config['_calendarevents']['event_types']
     for et in event_types:

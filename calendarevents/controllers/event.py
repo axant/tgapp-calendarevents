@@ -76,11 +76,11 @@ class EventController(TGController):
         if not event:
             abort(404)
 
-        event.name=kw['name']
-        event.summary=kw['summary']
-        event.datetime=kw['datetime']
-        event.location=kw['location']
-        event.linked_entity_id=kw.get('linked_entity')
+        event.name = kw['name']
+        event.summary = kw['summary']
+        event.datetime = kw['datetime']
+        event.location = kw['location']
+        event.linked_entity_id = kw.get('linked_entity')
 
         flash(_('Event successfully modified'))
         return plug_redirect('calendarevents', '/event/%s' % event.uid)

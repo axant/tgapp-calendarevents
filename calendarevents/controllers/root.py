@@ -19,6 +19,7 @@ from tgext.pluggable import plug_redirect
 from .calendar import CalendarController
 from .event import EventController
 
+
 class RootController(TGController):
     calendar = CalendarController()
     event = EventController()
