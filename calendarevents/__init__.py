@@ -7,6 +7,6 @@ import partials
 
 
 def plugme(app_config, options):
-    tg.config['_calendarevents'] = options
+    app_config['_calendarevents'] = options
     return dict(appid='calendarevents', global_helpers=False)
 
