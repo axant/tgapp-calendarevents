@@ -1,4 +1,4 @@
-from sqlalchemy import Table, ForeignKey, Column
+from sqlalchemy import Table, ForeignKey, Column, Boolean
 from sqlalchemy.types import Unicode, Integer, DateTime
 from sqlalchemy.orm import backref, relation
 
@@ -27,10 +27,17 @@ class Calendar(DeclarativeBase):
             return []
         return event_type.get_linkable_entities(self)
 
-    def events_in_range(self, start_date, end_date):
+    def events_in_range(self, start_date, end_date, active=True):
         from calendarevents.lib.utils import get_calendar_events_in_range
-        return get_calendar_events_in_range(self.uid, start_date, end_date)
+        return get_calendar_events_in_range(self.uid, start_date, end_date, active=active)
 
+    @property
+    def active_events(self):
+        return [e for e in self.events if e.active]
+
+    @property
+    def active_events_calendar_data(self):
+        return [e.calendar_data for e in self.events if e.active]
 
 class CalendarEvent(DeclarativeBase):
     __tablename__ = 'calendarevents_event'
@@ -41,6 +48,7 @@ class CalendarEvent(DeclarativeBase):
     datetime = Column(DateTime, nullable=False, index=True)
     end_time = Column(DateTime, index=True)
     location = Column(Unicode(255), nullable=False)
+    active = Column(Boolean, index=True, default=True)
 
     calendar_id = Column(Integer, ForeignKey(Calendar.uid), nullable=False, index=True)
     calendar = relation(Calendar, backref=backref('events', order_by='CalendarEvent.datetime.desc()',
@@ -79,3 +87,9 @@ class CalendarEvent(DeclarativeBase):
     @cached_property
     def weather(self):
         return get_weather_for_date(self.location, self.datetime)
+
+    def deactivate(self):
+        self.active = False
+
+    def activate(self):
+        self.active = True

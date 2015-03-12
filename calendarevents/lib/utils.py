@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime as dt
 from sqlalchemy import or_
 from calendarevents import model
 
@@ -19,7 +19,8 @@ def create_event(cal, name, summary, datetime, location, linked_entity_type, lin
                                     end_time=end_time,
                                     location=location,
                                     linked_entity_type=linked_entity_type,
-                                    linked_entity_id=linked_entity_id)
+                                    linked_entity_id=linked_entity_id,
+                                    active=True)
     model.DBSession.add(new_event)
     return new_event
 
@@ -28,15 +29,15 @@ def get_event(event_id):
     return model.DBSession.query(model.CalendarEvent).get(event_id)
 
 
-def get_calendar_events_from_datetime(calendar, start_time):
-    return get_calendar_events_in_range(calendar, start_time)
+def get_calendar_events_from_datetime(calendar, start_time, active=True):
+    return get_calendar_events_in_range(calendar, start_time, active=active)
 
 
-def get_calendar_day_events(calendar, start_time):
-    return get_calendar_events_in_range(calendar, start_time, start_time)
+def get_calendar_day_events(calendar, start_time, active=True):
+    return get_calendar_events_in_range(calendar, start_time, start_time, active=active)
 
 
-def get_calendar_events_in_range(calendar, start_time, end_time=None):
+def get_calendar_events_in_range(calendar, start_time, end_time=None, active=True):
     """Retrieves events in range of datetimes.
 
     When ``start_time`` and ``end_time`` coincide it will get the events
@@ -47,10 +48,11 @@ def get_calendar_events_in_range(calendar, start_time, end_time=None):
 
     """
     if start_time == end_time:
-        start_time = datetime.combine(start_time.date(), datetime.min.time())
-        end_time = datetime.combine(start_time.date(), datetime.max.time())
+        start_time = dt.combine(start_time.date(), dt.min.time())
+        end_time = dt.combine(start_time.date(), dt.max.time())
 
     q = model.DBSession.query(model.CalendarEvent).filter(
+        model.CalendarEvent.active == active,
         model.CalendarEvent.calendar_id == calendar,
         or_(model.CalendarEvent.datetime >= start_time, model.CalendarEvent.end_time > start_time)
     )
@@ -58,3 +60,13 @@ def get_calendar_events_in_range(calendar, start_time, end_time=None):
     if end_time is not None:
         q = q.filter(model.CalendarEvent.datetime <= end_time)
     return q.order_by(model.CalendarEvent.datetime)
+
+
+def deactivate_event(event_id):
+    event = get_event(event_id)
+    event.deactivate()
+
+
+def activate_event(event_id):
+    event = get_event(event_id)
+    event.activate()

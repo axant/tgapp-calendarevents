@@ -150,9 +150,12 @@ inside ``calendarvents.lib.utils`` you can find a bunch of utils to view and man
 * **create_event(cal, name, summary, datetime, location, linked_entity_type, linked_entity_id, end_time)** - create a
   new ``calendar_event``
 * **get_event(event_id)** - retrieve the ``calendar_event`` for the given ``event_id``
-* **get_calendar_events_from_datetime(calendar, start_time)** retrieve all ``calendar_event`` for the given calendar
-  starting from the given ``start_time``
-* **get_calendar_day_events(calendar, start_time)** retrieve all ``calendar_event`` for the given calendar and the given
-  ``start_time``
-* **get_calendar_events_in_range(calendar, start_time, end_time)** - retrieve all ``calendar_event`` for the given
-  calendar and the given range of time (``start_time`` - ``end_time``)
+* **get_calendar_events_from_datetime(calendar, start_time, active)** retrieve all the active ``calendar_event`` for
+  the given calendar starting from the given ``start_time``
+* **get_calendar_day_events(calendar, start_time, active)** retrieve all the active ``calendar_event`` for the given
+  calendar and the given ``start_time``
+* **get_calendar_events_in_range(calendar, start_time, end_time, active)** - retrieve all the active ``calendar_event``
+  for the given calendar and the given range of time (``start_time`` - ``end_time``)
+* **deactivate_event(event_id)** - deactivate a ``calendar_event``, by default standard get event utils retrieve only
+  active events
+* **activate_event(event_id)** - put the ``calendar_event`` in active state
