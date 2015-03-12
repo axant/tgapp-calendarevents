@@ -72,7 +72,7 @@ class EventController(TGController):
     @require(predicates.in_group('calendarevents'))
     @validate(get_form(), error_handler=validated_handler(edit))
     def save(self, event, **kw):
-        event = DBSession.query(model.CalendarEvent).get(event)
+        event = utils.get_event(event)
         if not event:
             abort(404)
 

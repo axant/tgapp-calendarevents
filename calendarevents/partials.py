@@ -19,7 +19,7 @@ def event(event):
 def calendar(cal, event_sources=None, start_from=datetime.utcnow(), view='month', all_day_slot=False, slot_minutes=15,
              first_hour=8, column_format="d/M", time_format="HH:mm"):
     if event_sources is None:
-        event_sources = {'event_sources': [{'events': [e.calendar_data for e in cal.events]}]}
+        event_sources = {'event_sources': [{'events': cal.active_events_calendar_data}]}
 
     if view not in ('month', 'basicWeek', 'basicDay', 'agendaWeek', 'agendaDay'):
         view = 'month'
