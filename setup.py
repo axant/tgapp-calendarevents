@@ -14,6 +14,15 @@ install_requires = [
     "tgext.datahelpers >= 0.0.8"
 ]
 
+testpkgs=['WebTest >= 1.2.3',
+          'nose',
+          'coverage',
+          'sqlalchemy',
+          'zope.sqlalchemy',
+          'repoze.who',
+          "tw2.forms",
+]
+
 here = os.path.abspath(os.path.dirname(__file__))
 try:
     README = open(os.path.join(here, 'README.rst')).read()
