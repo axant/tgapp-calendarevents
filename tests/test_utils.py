@@ -1,5 +1,7 @@
 import datetime
+import transaction
 from calendarevents.lib import utils
+from calendarevents.model import DBSession
 from tests.base import configure_app, create_app
 
 
@@ -17,7 +19,8 @@ class TestCalendareventsUtilsTests(object):
         self.test_create_calendar()
         calendar = utils.get_calendar(1)
 
-        event = utils.create_event(calendar, 'event_test', 'event_summary', datetime.datetime(2020, 1, 1, 1, 3, 0),
+        event = utils.create_event(calendar, 'event_test', 'event_summary',
+                                   datetime.datetime(2020, 1, 1, 1, 3, 0),
                                    'torino', 'event_type', 1, end_time=None)
         assert event.name == 'event_test'
 
@@ -28,3 +31,33 @@ class TestCalendareventsUtilsTests(object):
         self.test_create_event()
         events = utils.get_calendar_events_from_datetime(calendar.uid, start_time).all()
         assert len(events) > 0, len(events)
+
+    def test_get_calendar_day_events(self):
+        self.test_create_calendar()
+        calendar = utils.get_calendar(1)
+        start_time = datetime.datetime(2020, 1, 1, 1, 3, 0)
+        self.test_create_event()
+        events = utils.get_calendar_day_events(calendar.uid, start_time).all()
+        assert len(events) > 0, len(events)
+
+    def test_deactivate_event(self):
+        self.test_create_calendar()
+        calendar = utils.get_calendar(1)
+        event = utils.create_event(calendar, 'event_test', 'event_summary',
+                                   datetime.datetime(2020, 1, 1, 1, 3, 0),
+                                   'torino', 'event_type', 1, end_time=None)
+        DBSession.flush()
+        utils.deactivate_event(event.uid)
+        assert event.active == False, event
+
+
+    def test_activate_event(self):
+        self.test_create_calendar()
+        calendar = utils.get_calendar(1)
+        event = utils.create_event(calendar, 'event_test', 'event_summary',
+                                   datetime.datetime(2020, 1, 1, 1, 3, 0),
+                                   'torino', 'event_type', 1, end_time=None)
+        DBSession.flush()
+        event.active = False
+        utils.activate_event(event.uid)
+        assert event.active, event
