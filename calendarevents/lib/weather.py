@@ -14,7 +14,7 @@ YAHOO_WEATHER_URL = 'http://xml.weather.yahoo.com/forecastrss?w=%s&u=%s'
 YAHOO_WEATHER_NS = 'http://xml.weather.yahoo.com/ns/rss/1.0'
 
 
-def get_weather_from_yahoo(location_id, units='metric'):
+def get_weather_from_yahoo(location_id, units='metric'):  # pragma: no cover
     location_id = quote(location_id)
     if units == 'metric':
         unit = 'c'

@@ -21,6 +21,8 @@ testpkgs=['WebTest >= 1.2.3',
           'zope.sqlalchemy',
           'repoze.who',
           "tw2.forms",
+          "formencode",
+          "genshi"
 ]
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -42,6 +44,10 @@ setup(
     paster_plugins=[],
     packages=find_packages(exclude=['ez_setup']),
     install_requires=install_requires,
+    extras_require={
+        'testpkgs': testpkgs,
+    },
+    tests_require=testpkgs,
     include_package_data=True,
     package_data={'tgapp.calendarevents': ['i18n/*/LC_MESSAGES/*.mo',
                                            'templates/*/*',

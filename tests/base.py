@@ -104,7 +104,7 @@ def configure_app():
     app_cfg.sa_auth.authmetadata = TestAuthMetadata()
     app_cfg['beaker.session.secret'] = 'SECRET'
     app_cfg.auth_backend = 'sqlalchemy'
-
+    app_cfg.sa_auth.cookie_secret='SECRET'
     app_cfg.package.model = FakeSQLAModel()
     app_cfg.use_sqlalchemy = True
     app_cfg['sqlalchemy.url'] = 'sqlite://'
