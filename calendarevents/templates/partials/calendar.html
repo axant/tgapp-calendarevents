@@ -9,6 +9,7 @@
     <script>
         CalJQ(document).ready(function() {
             CalJQ('#calendarevents_calendar').fullCalendar({
+                firstDay:${first_day},
                 year: ${start_from.year},
                 month: ${start_from.month-1},
                 date: ${start_from.day},
