@@ -103,6 +103,7 @@ The .js hook script can follow this example::
     })(window);
 
 note: if you inject js_hooks you replace the default behavior
+note: **from version 0.2.0 date holds a moment for the clicked day**
 
 Exposed Partials
 ----------------
