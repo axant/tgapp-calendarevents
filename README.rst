@@ -133,12 +133,15 @@ The calendar partial expose a partial with just a calendar, parameters accepted 
   not provide this, events are taken from ``cal`` object
 * ``start_from`` -> (datetime) starting calendar date
 * ``view`` -> (String)  (default value "month") type of the calendar view (``month``, ``basicWeek``, ``basicDay``,
-  ``agendaWeek``, ``agendaDay``)
+  ``agendaWeek``, ``agendaDay``, ``custom_days``)
 * ``all_day_slot`` -> (Bool) (default value: False) Event slot are displayed for all day or for the real time slot
-* ``slot_minutes`` -> (Int) (default value: 15) Minutes slot duration
-* ``first_hour`` -> (Int) (default value: 8) First hour displayed
+* ``slot_minutes`` -> (Int or String) (default value: '00:15:00' or 15) Minutes slot duration, if is integer slot_minutes < 60
+* ``first_hour`` -> (Int or String) (default value: '08:00:00' or 8) First hour displayed
 * ``time_format`` -> (String) (default value: "HH:mm"), the display format for time
-* ``column_format`` -> (String) (default value: "d/M"), the display format for column date
+* ``column_format`` -> (String) (default value: "D/M"), the display format for column date
+* ``first_day`` -> (Int) (default value: 0), the fist day of week
+* ``day_to_show`` -> (Int) (default value: 8), day to show in view custom days
+* ``slot_label_interval`` -> (String) (default value: '01:00:00'), Interval of the slot label
 
 Utils
 -----
