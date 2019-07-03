@@ -1,14 +1,24 @@
 import tg
-from tg.i18n import ugettext as _
+try:
+    import builtins
+except ImportError:
+    import __builtin__ as builtins
 from datetime import datetime
 import json
-from urllib import urlopen, urlencode
 from contextlib import closing
 from tgext.datahelpers.caching import entitycached, CacheKey
 
-import urllib2
+# Python 3 version
+try:
+    from urllib.request import urlopen
+    from urllib.error import HTTPError
+    from urllib.parse import urlencode, quote
+# Python 2 version
+except ImportError:
+    from urllib import urlencode, quote
+    from urllib2 import urlopen, HTTPError
+
 from xml.dom import minidom
-from urllib import quote
 
 YAHOO_WEATHER_URL = 'http://xml.weather.yahoo.com/forecastrss?w=%s&u=%s'
 YAHOO_WEATHER_NS = 'http://xml.weather.yahoo.com/ns/rss/1.0'
@@ -21,7 +31,7 @@ def get_weather_from_yahoo(location_id, units='metric'):  # pragma: no cover
     else:
         unit = 'f'
     url = YAHOO_WEATHER_URL % (location_id, unit)
-    handler = urllib2.urlopen(url)
+    handler = urlopen(url)
     dom = minidom.parse(handler)    
     handler.close()
         
@@ -38,7 +48,7 @@ def get_weather_from_yahoo(location_id, units='metric'):  # pragma: no cover
         'condition': ('text', 'code', 'temp', 'date')
     }       
     
-    for (tag, attrs) in ns_data_structure.iteritems():
+    for (tag, attrs) in ns_data_structure.items():
         element = dom.getElementsByTagNameNS(YAHOO_WEATHER_NS, tag)[0]
         parsed_attrs = {}
         for attr in attrs:
@@ -50,8 +60,10 @@ def get_weather_from_yahoo(location_id, units='metric'):  # pragma: no cover
     weather_data['geo']['lat'] = dom.getElementsByTagName('geo:lat')[0].firstChild.data
     weather_data['geo']['long'] = dom.getElementsByTagName('geo:long')[0].firstChild.data
 
-    weather_data['condition']['title'] = dom.getElementsByTagName('item')[0].getElementsByTagName('title')[0].firstChild.data
-    weather_data['html_description'] = dom.getElementsByTagName('item')[0].getElementsByTagName('description')[0].firstChild.data
+    weather_data['condition']['title'] = dom.getElementsByTagName('item')[0]\
+        .getElementsByTagName('title')[0].firstChild.data
+    weather_data['html_description'] = dom.getElementsByTagName('item')[0]\
+        .getElementsByTagName('description')[0].firstChild.data
     
     forecasts = []
     for forecast in dom.getElementsByTagNameNS(YAHOO_WEATHER_NS, 'forecast'):
@@ -59,7 +71,8 @@ def get_weather_from_yahoo(location_id, units='metric'):  # pragma: no cover
         for attr in ('date', 'low', 'high', 'text', 'code'):
             parsed_attrs[attr] = forecast.getAttribute(attr)
         parsed_attrs['icon'] = 'http://l.yimg.com/a/i/us/we/52/%s.gif' % (parsed_attrs['code'])
-        parsed_attrs['temp_medium'] = int(parsed_attrs['high'])-((int(parsed_attrs['high'])-int(parsed_attrs['low']))/3)
+        parsed_attrs['temp_medium'] = int(parsed_attrs['high']) - ((int(parsed_attrs['high'])
+                - int(parsed_attrs['low'])) / 3)
         forecasts.append(parsed_attrs)
     weather_data['forecasts'] = forecasts
     

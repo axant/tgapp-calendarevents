@@ -33,7 +33,7 @@ except IOError:
 
 setup(
     name='tgapp-calendarevents',
-    version='0.2.0',
+    version='0.2.1',
     description='TurboGears2 pluggable application for events and calendars',
     long_description=README,
     author='Alessandro Molina',

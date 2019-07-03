@@ -6,7 +6,7 @@ from tgext.pluggable import app_model
 
 
 def bootstrap(command, conf, vars):
-    print 'Bootstrapping calendarevents...'
+    print('Bootstrapping calendarevents...')
 
     g = app_model.Group(group_name='calendarevents', display_name='Calendar Events manager')
     model.DBSession.add(g)

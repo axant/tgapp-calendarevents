@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from tg import config
-import forms
 
 
 def get_form():
