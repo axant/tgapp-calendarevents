@@ -46,7 +46,7 @@ setup(
     packages=find_packages(exclude=['ez_setup']),
     install_requires=install_requires,
     extras_require={
-        'testpkgs': testpkgs,
+        'testing': testpkgs,
     },
     tests_require=testpkgs,
     include_package_data=True,
