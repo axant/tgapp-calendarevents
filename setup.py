@@ -9,9 +9,10 @@ except ImportError:
     from setuptools import setup, find_packages
 
 install_requires = [
-    "TurboGears2 >= 2.2.0",
+    "TurboGears2 >= 2.3.8",
     "tgext.pluggable >= 0.0.7",
-    "tgext.datahelpers >= 0.0.8"
+    "tgext.datahelpers >= 0.0.8",
+    "future"
 ]
 
 testpkgs=['WebTest >= 1.2.3',
