@@ -45,9 +45,8 @@ class EventController(TGController):
                                        linked_entity_type=cal.events_type,
                                        linked_entity_id=kw.get('linked_entity'))
 
-        DBSession.flush()
         flash(_('Event successfully added'))
-        return plug_redirect('calendarevents', '/calendar/%d' % new_event.uid)
+        return plug_redirect('calendarevents', '/calendar/%d' % cal.uid)
 
     @expose()
     @require(predicates.in_group('calendarevents'))
