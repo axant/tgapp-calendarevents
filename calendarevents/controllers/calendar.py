@@ -1,4 +1,3 @@
-import json
 from tg import TGController
 from tg import expose, flash, require, validate
 from tg.i18n import ugettext as _
@@ -8,7 +7,6 @@ from calendarevents import model
 from calendarevents.lib.utils import create_calendar
 from calendarevents.model import DBSession
 from tgext.pluggable import plug_redirect
-import transaction
 
 try:
     from tg import predicates
@@ -55,7 +53,5 @@ class CalendarController(TGController):
     def save(self, name, events_type):
         new_calendar = create_calendar(name=name, events_type=events_type)
         model.DBSession.flush()
-        id = new_calendar.uid
-        transaction.commit()
         flash(_('Calendar successfully added'))
-        return plug_redirect('calendarevents', '/calendar/%d' % id)
+        return plug_redirect('calendarevents', '/calendar/%d' % new_calendar.uid)

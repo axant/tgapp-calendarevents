@@ -111,7 +111,7 @@ def configure_app():
     app_cfg.use_sqlalchemy = True
     app_cfg['sqlalchemy.url'] = 'sqlite://'
     app_cfg.use_transaction_manager = True
-    app_cfg['tm_enabled'] = True
+    app_cfg['tm.enabled'] = True
     app_cfg.model = app_cfg.package.model
     app_cfg.DBSession = app_cfg.package.model.DBSession
 

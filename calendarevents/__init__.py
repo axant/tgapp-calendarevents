@@ -9,7 +9,7 @@ def plugme(app_config, options):
         app_config['_calendarevents'] = options  # 2.3
     except TypeError as ex:
         app_config.update_blueprint({
-            '_calendar_events': options  # 2.4
+            '_calendarevents': options  # 2.4
         })
     return dict(appid='calendarevents', global_helpers=False)
 
