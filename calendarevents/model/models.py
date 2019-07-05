@@ -1,4 +1,4 @@
-from sqlalchemy import Table, ForeignKey, Column, Boolean
+from sqlalchemy import ForeignKey, Column, Boolean
 from sqlalchemy.types import Unicode, Integer, DateTime
 from sqlalchemy.orm import backref, relation
 
@@ -38,6 +38,7 @@ class Calendar(DeclarativeBase):
     @property
     def active_events_calendar_data(self):
         return [e.calendar_data for e in self.events if e.active]
+
 
 class CalendarEvent(DeclarativeBase):
     __tablename__ = 'calendarevents_event'

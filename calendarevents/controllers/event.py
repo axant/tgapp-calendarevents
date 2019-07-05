@@ -6,7 +6,7 @@ from calendarevents import model
 from calendarevents.model import DBSession
 from calendarevents.lib import get_form
 from calendarevents.lib import utils
-
+import transaction
 from tgext.pluggable import plug_redirect, plug_url
 from tgext.datahelpers.validators import SQLAEntityConverter, validated_handler
 from tgext.datahelpers.utils import fail_with, object_primary_key
@@ -46,8 +46,11 @@ class EventController(TGController):
                                        linked_entity_type=cal.events_type,
                                        linked_entity_id=kw.get('linked_entity'))
 
+        id = cal.uid
+        DBSession.flush()
+        transaction.commit()
         flash(_('Event successfully added'))
-        return plug_redirect('calendarevents', '/calendar/%s' % cal.uid)
+        return plug_redirect('calendarevents', '/calendar/%d' % id)
 
     @expose()
     @require(predicates.in_group('calendarevents'))
@@ -58,6 +61,7 @@ class EventController(TGController):
         if referer and referer.endswith(plug_url('calendarevents', '/event/%s' % event.uid)):
             referer = plug_url('calendarevents', '/calendar/%s' % event.calendar_id)
         DBSession.delete(event)
+        transaction.commit()
         return redirect(referer)
 
     @expose('calendarevents.templates.event.edit')

@@ -1,8 +1,8 @@
-from tg import request
 from tests.base import configure_app, create_app
 
 
 class TestCalendareventsControllerTests(object):
+
     @classmethod
     def setupClass(cls):
         cls.app_config = configure_app()
@@ -23,10 +23,14 @@ class TestCalendareventsControllerTests(object):
         assert "Insert new calendar's details" in resp, resp
 
     def test_save_calendar(self):
-        resp = self.app.post('/calendarevents/calendar/save',
-                             params={'name': 'test_calendar1',
-                                     'events_type': 'event_type'}).follow()
-        assert 'Calendar successfully added' in resp, resp
+        resp = self.app.post(
+            '/calendarevents/calendar/save',
+            params={
+                'name': 'test_calendar1',
+                'events_type': 'event_type'}
+        )
+        redirection = resp.follow()
+        assert 'Calendar successfully added' in redirection
 
     def test_view_calendar(self):
         self.test_save_calendar()

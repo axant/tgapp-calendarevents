@@ -31,7 +31,6 @@ try:
                                         options=Deferred(lambda: [e.name
                                                                   for e in config['_calendarevents']['event_types']]))
     new_calendar_form = NewCalendarForm()
-
 except ImportError:
     from tw.api import WidgetsList
     from tw.forms import TableForm, TextField, HiddenField, TextArea, SingleSelectField

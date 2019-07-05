@@ -1,15 +1,14 @@
 import json
 from tg import TGController
-from tg import expose, flash, require, url, lurl, request, redirect, validate, config
-from tg.i18n import ugettext as _, lazy_ugettext as l_
+from tg import expose, flash, require, validate
+from tg.i18n import ugettext as _
 from tgext.datahelpers.utils import fail_with
 from tgext.datahelpers.validators import SQLAEntityConverter, validated_handler
-
 from calendarevents import model
 from calendarevents.lib.utils import create_calendar
 from calendarevents.model import DBSession
-
 from tgext.pluggable import plug_redirect
+import transaction
 
 try:
     from tg import predicates
@@ -22,13 +21,14 @@ from calendarevents.lib.validators import DateParameterValidator
 
 class CalendarController(TGController):
     @expose('calendarevents.templates.calendar.calendar')
-    @validate(dict(cal=SQLAEntityConverter(model.Calendar),
-                   start_from=DateParameterValidator()),
-              error_handler=fail_with(404))
+    @validate(dict(
+        cal=SQLAEntityConverter(model.Calendar),
+        start_from=DateParameterValidator()),
+        error_handler=fail_with(404)
+    )
     def _default(self, cal, view='month', start_from=None, **kw):
         if view not in ('month', 'basicWeek', 'basicDay', 'agendaWeek', 'agendaDay'):
             view = 'month'
-        
         return dict(cal=cal, view=view, start_from=start_from)
 
     @expose('calendarevents.templates.calendar.events')
@@ -55,5 +55,7 @@ class CalendarController(TGController):
     def save(self, name, events_type):
         new_calendar = create_calendar(name=name, events_type=events_type)
         model.DBSession.flush()
+        id = new_calendar.uid
+        transaction.commit()
         flash(_('Calendar successfully added'))
-        return plug_redirect('calendarevents', '/calendar/%s' % new_calendar.uid)
+        return plug_redirect('calendarevents', '/calendar/%d' % id)

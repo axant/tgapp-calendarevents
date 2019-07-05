@@ -1,9 +1,7 @@
 from webtest import TestApp
-import inspect
 import transaction
-
 from tg import AppConfig
-from tg.configuration import milestones
+from calendarevents.lib import forms
 from tg.configuration.auth import TGAuthMetadata
 from tgext.pluggable import plug, app_model
 
@@ -94,6 +92,9 @@ class FakeEventType(EventType):
         return {'type': 'event_type', 'price': 20}
 
 
+calendar_form = forms.NewEventForm()
+
+
 def configure_app():
     app_cfg = AppConfig(minimal=True)
     app_cfg.renderers = ['genshi']
@@ -101,19 +102,23 @@ def configure_app():
     app_cfg.use_dotted_templatenames = True
     app_cfg.package = FakeAppPackage()
     app_cfg.use_toscawidgets2 = True
+    app_cfg['tw2.enabled'] = True
     app_cfg.sa_auth.authmetadata = TestAuthMetadata()
     app_cfg['beaker.session.secret'] = 'SECRET'
     app_cfg.auth_backend = 'sqlalchemy'
-    app_cfg.sa_auth.cookie_secret='SECRET'
+    app_cfg.sa_auth.cookie_secret = 'SECRET'
     app_cfg.package.model = FakeSQLAModel()
     app_cfg.use_sqlalchemy = True
     app_cfg['sqlalchemy.url'] = 'sqlite://'
     app_cfg.use_transaction_manager = True
-
+    app_cfg['tm_enabled'] = True
     app_cfg.model = app_cfg.package.model
     app_cfg.DBSession = app_cfg.package.model.DBSession
 
-    plug(app_cfg, 'calendarevents', event_types=[FakeEventType()], global_models=True, plug_bootstrap=False)
+    plug(
+        app_cfg, 'calendarevents', event_types=[FakeEventType()],
+        global_models=False, plug_bootstrap=False, form_instance=calendar_form
+    )
 
     # This is to reset @cached_properties so they get reconfigured for new backend
 
