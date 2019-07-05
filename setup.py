@@ -9,21 +9,23 @@ except ImportError:
     from setuptools import setup, find_packages
 
 install_requires = [
-    "TurboGears2 >= 2.3.8",
+    "TurboGears2 >= 2.2.0",
     "tgext.pluggable >= 0.0.7",
     "tgext.datahelpers >= 0.0.8",
-    "future"
+    "future",
+    "transaction<2.4.0"
 ]
 
-testpkgs=['WebTest >= 1.2.3',
-          'nose',
-          'coverage',
-          'sqlalchemy',
-          'zope.sqlalchemy',
-          'repoze.who',
-          "tw2.forms",
-          "formencode",
-          "genshi"
+testpkgs = [
+    'WebTest >= 1.2.3',
+    'nose',
+    'coverage',
+    'sqlalchemy',
+    'zope.sqlalchemy',
+    'repoze.who',
+    "tw2.forms",
+    "formencode",
+    "genshi"
 ]
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -39,7 +41,7 @@ setup(
     long_description=README,
     author='Alessandro Molina',
     author_email='alessandro.molina@axant.it',
-    #url='',
+    # url='',
     keywords='turbogears2.application',
     setup_requires=[],
     paster_plugins=[],
